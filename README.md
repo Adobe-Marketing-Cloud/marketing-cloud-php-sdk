@@ -53,8 +53,10 @@ Wraps [SiteCatalyst Report API](http://developer.omniture.com/en_US/documentatio
 ### Search for artists by name
 
     $results = $adm->getReportApi()->queueTrended(array(
-        'reportSuiteId' => 'YOUR-REPORT-SUITE-ID', 
-        'metrics' => array('pageviews')
+        'reportSuiteID' => 'YOUR-REPORT-SUITE-ID', 
+        'date'     => date('Y-m-d'),
+        'metrics'  => array('pageviews'),
+        'elements' => array('eVar1'),
     ));
     
     print_r($results);

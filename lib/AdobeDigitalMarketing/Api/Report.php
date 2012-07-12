@@ -25,4 +25,20 @@ class AdobeDigitalMarketing_Api_Report extends AdobeDigitalMarketing_Api
 
         return $this->returnResponse($response);
     }
+    
+    /**
+     * Gets a report by report ID
+     * https://developer.omniture.com/en_US/documentation/sitecatalyst-reporting/r-getreport
+     *
+     * @param   int $reportID  the report ID
+     * @return  array Report
+     */
+    public function getReport($reportId)
+    {
+        $response = $this->post('Report.GetReport', array(
+            'reportID' => $reportId,
+        ));
+
+        return $this->returnResponse($response);
+    }
 }

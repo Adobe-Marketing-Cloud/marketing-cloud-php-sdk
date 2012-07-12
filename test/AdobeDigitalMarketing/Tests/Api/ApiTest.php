@@ -2,8 +2,9 @@
 
 abstract class AdobeDigitalMarketing_Tests_ApiTest extends PHPUnit_Framework_TestCase
 {
-    protected $username = 'YOUR USERNAME';
-    protected $secret   = 'YOUR SECRET';
+    protected $username    = 'YOUR USERNAME';
+    protected $secret      = 'YOUR SECRET';
+    protected $reportSuite = 'YOUR REPORT SUITE'
     
     abstract protected function getApiClass();
 
