@@ -61,6 +61,8 @@ Wraps [SiteCatalyst Report API](http://developer.omniture.com/en_US/documentatio
     
     print_r($response);
 
+The above code will render the status of your queued report, which will look something like this:
+
     Array
     (
       [status]    => ready
@@ -70,7 +72,7 @@ Wraps [SiteCatalyst Report API](http://developer.omniture.com/en_US/documentatio
     
 ### Retrieve a Queued Report
 
-    Once the report_id is retrieved for the trended, ranked, or overtime report, use the Report.GetReport API call to retrieve the report
+Once the report_id is retrieved for the trended, ranked, or overtime report, use the Report.GetReport API call to retrieve the report
 
     $reportApi = $adm->getReportApi();
     $response = $reportApi->queueRanked(array(
@@ -84,6 +86,8 @@ Wraps [SiteCatalyst Report API](http://developer.omniture.com/en_US/documentatio
     } while ($report['status'] != 'done');
 
     print_r($report['report']);
+
+The above code will render the Report array, which will look something like this:
 
     Array
     (
