@@ -50,7 +50,7 @@ Wraps [SiteCatalyst Report API](http://developer.omniture.com/en_US/documentatio
 
     $reportApi = $adm->getReportApi();
 
-### Search for artists by name
+### Run a Trended Report
 
     $results = $adm->getReportApi()->queueTrended(array(
         'reportSuiteID' => 'YOUR-REPORT-SUITE-ID', 
