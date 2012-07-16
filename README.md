@@ -1,13 +1,13 @@
 # PHP Adobe Digital Marketing API
 
-A simple, Object Oriented API wrapper for the AdobeDigitalMarketing Api written with PHP5.
+A simple, Object Oriented API wrapper for the AdobeDigitalMarketing Api written with PHP5.  
 This library is modeled after the [php-github-api](https://github.com/ornicar/php-github-api) library built by [ornicar](https://github.com/ornicar)
 
 Uses [AdobeDigitalMarketing API 1.3](http://developer.omniture.com/en_US/documentation).
 
 Requires
 
- * PHP 5.2 or 5.3.
+ * PHP 5.2 or higher
  * [php curl](http://php.net/manual/en/book.curl.php) but it is possible to write another transport layer..
 
 If the method you need does not exist yet, dont hesitate to request it with an [issue](http://github.com/Adobe-Digital-Marketing/php-adm-api/issues)!
@@ -23,7 +23,7 @@ Replace the `/path/to/php-adm-api/` path with the path you used for php-adm-api 
 
 > php-adm-api follows the PEAR convention names for its classes, which means you can easily integrate php-adm-api classes loading in your own autoloader.
 
-## Instanciate a new AdobeDigitalMarketing Client
+## Instantiate a new AdobeDigitalMarketing Client
 
     $adm = new AdobeDigitalMarketing_Client();
 
@@ -45,7 +45,7 @@ Next requests will not be authenticated
 
 ## Reports
 
-For queueing SiteCatalyst reports
+For queueing SiteCatalyst reports  
 Wraps [SiteCatalyst Report API](http://developer.omniture.com/en_US/documentation/sitecatalyst-reporting).
 
     $reportApi = $adm->getReportApi();
