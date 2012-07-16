@@ -52,7 +52,7 @@ Wraps [SiteCatalyst Report API](http://developer.omniture.com/en_US/documentatio
 
 ### Run a Ranked Report
 
-    $response = $adm->getReportApi()->queueRanked(array(
+    $response = $reportApi->queueRanked(array(
         'reportSuiteID' => 'your-id', 
         'date'     => date('Y-m-d'),
         'metrics'  => array('pageviews'),
@@ -74,7 +74,6 @@ The above code will render the status of your queued report, which will look som
 
 Once the report_id is retrieved for the trended, ranked, or overtime report, use the Report.GetReport API call to retrieve the report
 
-    $reportApi = $adm->getReportApi();
     $response = $reportApi->queueRanked(array(
         //... (see above)
     ));
