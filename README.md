@@ -82,7 +82,7 @@ Once the report_id is retrieved for the trended, ranked, or overtime report, use
     $reportId = $response['report_id'];
 
     do {
-        $response = $reportApi->getReport($reportId);
+        $report = $reportApi->getReport($reportId);
     } while ($report['status'] != 'done');
 
     print_r($report['report']);
