@@ -50,22 +50,64 @@ Wraps [SiteCatalyst Report API](http://developer.omniture.com/en_US/documentatio
 
     $reportApi = $adm->getReportApi();
 
-### Run a Trended Report
+### Run a Ranked Report
 
-    $results = $adm->getReportApi()->queueTrended(array(
-        'reportSuiteID' => 'YOUR-REPORT-SUITE-ID', 
+    $response = $adm->getReportApi()->queueRanked(array(
+        'reportSuiteID' => 'your-id', 
         'date'     => date('Y-m-d'),
         'metrics'  => array('pageviews'),
         'elements' => array('eVar1'),
     ));
     
-    print_r($results);
+    print_r($response);
 
     Array
     (
       [status]    => ready
       [statusMsg] => Your report has been queued
-      [report_id] => #######
+      [report_id] => 123456789
+    )
+    
+### Retrieve a Queued Report
+
+    Once the report_id is retrieved for the trended, ranked, or overtime report, use the Report.GetReport API call to retrieve the report
+
+    $reportApi = $adm->getReportApi();
+    $response = $reportApi->queueRanked(array(
+        //... (see above)
+    ));
+    
+    $reportId = $response['report_id'];
+
+    do {
+        $response = $reportApi->getReport($reportId);
+    } while ($report['status'] != 'done');
+
+    print_r($report['report']);
+
+    Array
+    (
+        [reportSuite] => Array (
+            [id]      => your-id
+            [name]    => Your Report Suite
+        )
+        [period]      => "Mon. 16 July 2012",
+        [elements]    => Array (
+            [id]      => eVar2,
+            [name]    => eVar 2
+        )
+        [metrics]     => Array (
+            [id]      => event2
+            [name]    => Page View Event
+            [type]    => number
+        )
+        [type]        => trended
+        [data]        => Array (
+            ...
+        )
+        [totals]      => Array (
+            ...
+        )
     )
 
 Returns an array of results as described in [the documentation](https://developer.omniture.com/en_US/documentation/sitecatalyst-reporting/r-reportqueueresponse)
