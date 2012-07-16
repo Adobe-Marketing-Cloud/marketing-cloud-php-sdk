@@ -72,14 +72,60 @@ class AdobeDigitalMarketing_Api_Report extends AdobeDigitalMarketing_Api
      * Gets a report by report ID
      * https://developer.omniture.com/en_US/documentation/sitecatalyst-reporting/r-getreport
      *
-     * @param   int $reportID  the report ID
-     * @return  array Report
+     * @param   int     The report ID returned as part of the "queue report" request.
+     * @return  tns:report      A structure containing the report data for the specified reportID
      */
     public function getReport($reportId)
     {
         $response = $this->post('Report.GetReport', array(
             'reportID' => $reportId,
         ));
+
+        return $this->returnResponse($response);
+    }
+    
+    /**
+     * Returns the current status of the specified report without retrieving the report data.
+     * https://developer.omniture.com/en_US/documentation/sitecatalyst-reporting/r-getstatus
+     *
+     * @param   int     The report ID returned as part of the "queue report" request.
+     * @return  tns:report_status       A structure containing status information for the specified reportID
+     */
+    public function getStatus($reportId)
+    {
+        $response = $this->post('Report.GetStatus', array(
+            'reportID' => $reportId,
+        ));
+
+        return $this->returnResponse($response);
+    }
+    
+    /**
+     * Cancels a previously submitted report request, and removes it from the processing queue.
+     * https://developer.omniture.com/en_US/documentation/sitecatalyst-reporting/r-cancelreport
+     *
+     * @param   int     The report ID returned as part of the "queue report" request.
+     * @return  int     Returns 1 if the operation is successful, or 0 if the operation failed.
+     */
+    public function cancelReport($reportId)
+    {
+        $response = $this->post('Report.CancelReport', array(
+            'reportID' => $reportId,
+        ));
+
+        return $this->returnResponse($response);
+    }
+    
+    /**
+     * Returns a list of reports in the specified company's report queue.
+     * https://developer.omniture.com/en_US/documentation/sitecatalyst-reporting/r-getreportqueue
+     *
+     * @param   none
+     * @return  tns:report_queue    A list of the company's currently queued report requests. SiteCatalyst determines the company by the authentication credentials provided with the request.
+     */
+    public function getReportQueue()
+    {
+        $response = $this->post('Report.GetReportQueue');
 
         return $this->returnResponse($response);
     }
