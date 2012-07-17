@@ -72,7 +72,7 @@ The above code will render the status of your queued report, which will look som
     
 ### Retrieve a Queued Report
 
-Once the report_id is retrieved for the trended, ranked, or overtime report, use the Report.GetReport API call to retrieve the report
+Once the report ID is retrieved for the trended, ranked, or overtime report, use the Report.GetReport API call to retrieve the report
 
     $response = $reportApi->queueRanked(array(
         //... (see above)
@@ -82,6 +82,7 @@ Once the report_id is retrieved for the trended, ranked, or overtime report, use
 
     do {
         $report = $reportApi->getReport($reportId);
+        sleep(2);
     } while ($report['status'] != 'done');
 
     print_r($report['report']);
