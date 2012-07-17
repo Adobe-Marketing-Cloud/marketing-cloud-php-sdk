@@ -67,7 +67,7 @@ The above code will render the status of your queued report, which will look som
     (
       [status]    => ready
       [statusMsg] => Your report has been queued
-      [report_id] => 123456789
+      [reportID] => 123456789
     )
     
 ### Retrieve a Queued Report
@@ -78,7 +78,7 @@ Once the report_id is retrieved for the trended, ranked, or overtime report, use
         //... (see above)
     ));
     
-    $reportId = $response['report_id'];
+    $reportId = $response['reportID'];
 
     do {
         $report = $reportApi->getReport($reportId);

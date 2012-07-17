@@ -10,6 +10,24 @@
 class AdobeDigitalMarketing_Api_Report extends AdobeDigitalMarketing_Api
 {
     /**
+     * Submits an Overtime report request. Overtime reports display the specified metrics over a defined time period. 
+     * Overtime reports can display multiple metrics in a report. The only possible element in an Overtime report is time.
+     * https://developer.omniture.com/en_US/documentation/sitecatalyst-reporting/r-queuetrended
+     *
+     * @param   array $reportDescription  the report description array
+     * @return  array 
+     *   - reportID: The report ID of the queued report
+     */
+    public function queueOvertime($reportDescription)
+    {
+        $response = $this->post('Report.QueueOvertime', array(
+            'reportDescription' => $reportDescription,
+        ));
+
+        return $this->returnResponse($response);
+    }
+    
+    /**
      * Submits a Ranked report request. Ranked reports display the rankings of the report pages in relation to the metric.
      * Ranked reports can display multiple metrics in a report.
      * Ranked reports have the following characteristics:
@@ -44,24 +62,6 @@ class AdobeDigitalMarketing_Api_Report extends AdobeDigitalMarketing_Api
     public function queueTrended($reportDescription)
     {
         $response = $this->post('Report.QueueTrended', array(
-            'reportDescription' => $reportDescription,
-        ));
-
-        return $this->returnResponse($response);
-    }
-
-    /**
-     * Submits an Overtime report request. Overtime reports display the specified metrics over a defined time period. 
-     * Overtime reports can display multiple metrics in a report. The only possible element in an Overtime report is time.
-     * https://developer.omniture.com/en_US/documentation/sitecatalyst-reporting/r-queuetrended
-     *
-     * @param   array $reportDescription  the report description array
-     * @return  array 
-     *   - reportID: The report ID of the queued report
-     */
-    public function queueOvertime($reportDescription)
-    {
-        $response = $this->post('Report.QueueOvertime', array(
             'reportDescription' => $reportDescription,
         ));
 
@@ -128,5 +128,50 @@ class AdobeDigitalMarketing_Api_Report extends AdobeDigitalMarketing_Api
         $response = $this->post('Report.GetReportQueue');
 
         return $this->returnResponse($response);
+    }
+    
+    /**
+     * Returns an overtime report.Queues the report synchronously.  
+     * @see AdobeDigitalMarketing_Api_Report::queueAndGetReport()
+     */    
+    public function getOvertimeReport($reportDescription)
+    {
+        return $this->queueAndGetReport($reportDescription, 'Overtime');
+    }
+
+    /**
+     * Returns a ranked report. Queues the report synchronously.  
+     * @see AdobeDigitalMarketing_Api_Report::queueAndGetReport()
+     */    
+    public function getRankedReport($reportDescription)
+    {
+        return $this->queueAndGetReport($reportDescription, 'Ranked');
+    }
+
+    /**
+     * Returns a trended report. Queues the report synchronously.  
+     * @see AdobeDigitalMarketing_Api_Report::queueAndGetReport()
+     */ 
+    public function getTrendedReport($reportDescription)
+    {
+        return $this->queueAndGetReport($reportDescription, 'Trended');
+    }
+    
+    /**
+     * Returns a report synchronously, calling getReport every two seconds until the report is ready
+     */
+    protected function queueAndGetReport($reportDescription, $type)
+    {
+        $method = sprintf('queue%s', ucwords($type));
+        $response = $this->$method($reportDescription);
+        
+        $reportId = $response['reportID'];
+        
+        do {
+            $report = $this->getReport($reportId);
+            sleep(2);
+        } while ($report['status'] != 'done');
+        
+        return $report['report'];
     }
 }
