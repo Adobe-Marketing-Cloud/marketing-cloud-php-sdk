@@ -1,27 +1,27 @@
-# PHP Adobe Digital Marketing API
+# Adobe Digital Marketing PHP SDK
 
-A simple, Object Oriented API wrapper for the AdobeDigitalMarketing Api written with PHP5.  
+A simple, Object Oriented wrapper for the Adobe Digital Marketing Suite APIs written in PHP5.  
 This library is modeled after the [php-github-api](https://github.com/ornicar/php-github-api) library built by [ornicar](https://github.com/ornicar)
 
-Uses [AdobeDigitalMarketing API 1.3](http://developer.omniture.com/en_US/documentation).
+Uses the [Adobe Digital Marketing Suite APIs](http://developer.omniture.com/en_US/documentation). Default version is 1.3, but 1.2 is compatible.
 
 Requires
 
  * PHP 5.2 or higher
  * [php curl](http://php.net/manual/en/book.curl.php) but it is possible to write another transport layer..
 
-If the method you need does not exist yet, dont hesitate to request it with an [issue](http://github.com/Adobe-Digital-Marketing/php-adm-api/issues)!
+If the method you need does not exist yet, dont hesitate to request it with an [issue](http://github.com/Adobe-Digital-Marketing/adobe-digital-marketing-php-sdk/issues)!
 
 ## Autoload
 
-The first step to use php-adm-api is to register its autoloader:
+The first step to use adobe-digital-marketing-php-sdk is to register its autoloader:
 
-    require_once '/path/to/php-adm-api/lib/AdobeDigitalMarketing/Autoloader.php';
+    require_once '/path/to/sdk/lib/AdobeDigitalMarketing/Autoloader.php';
     AdobeDigitalMarketing_Autoloader::register();
 
-Replace the `/path/to/php-adm-api/` path with the path you used for php-adm-api installation.
+Replace the `/path/to/sdk/` path with the path you used for adobe-digital-marketing-php-sdk installation.
 
-> php-adm-api follows the PEAR convention names for its classes, which means you can easily integrate php-adm-api classes loading in your own autoloader.
+> This SDK follows the PEAR convention names for its classes, which means you can easily integrate the class loading in your own autoloader.
 
 ## Instantiate a new AdobeDigitalMarketing Client
 
