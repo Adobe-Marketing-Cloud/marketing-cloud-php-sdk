@@ -83,7 +83,7 @@ Once the report ID is retrieved for the trended, ranked, or overtime report, use
     do {
         $report = $reportApi->getReport($reportId);
         sleep(2);
-    } while ($report['status'] != 'done');
+    } while ($report['status'] == 'not ready');
 
     print_r($report['report']);
 

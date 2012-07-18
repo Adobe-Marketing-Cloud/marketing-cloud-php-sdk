@@ -5,12 +5,14 @@ abstract class AdobeDigitalMarketing_Tests_ApiTest extends PHPUnit_Framework_Tes
     protected $username;
     protected $secret;
     protected $reportSuite;
+    protected $options;
 
     public function initialize($options)
     {
         $this->username    = $options['username'];
         $this->secret      = $options['secret'];
         $this->reportSuite = $options['reportSuite'];
+        $this->options     = $options;
     }
     
     abstract protected function getApiClass();
@@ -27,7 +29,7 @@ abstract class AdobeDigitalMarketing_Tests_ApiTest extends PHPUnit_Framework_Tes
     {
         $this->initializeFromGlobals();
 
-        $api = new AdobeDigitalMarketing_Client();
+        $api = new AdobeDigitalMarketing_Client(new AdobeDigitalMarketing_HttpClient_Curl($this->options));
         $api->authenticate($this->username, $this->secret);
         
         return $api;

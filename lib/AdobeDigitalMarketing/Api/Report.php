@@ -167,11 +167,41 @@ class AdobeDigitalMarketing_Api_Report extends AdobeDigitalMarketing_Api
         
         $reportId = $response['reportID'];
         
+        $attempts = 0;
         do {
             $report = $this->getReport($reportId);
-            sleep(2);
-        } while ($report['status'] != 'done');
-        
+            sleep($this->getSleepSeconds(++$attempts, 50));
+        } while ($report['status'] == 'not ready');
+
         return $report['report'];
+    }
+    
+    /**
+    * Determines next sleep time for report queue checking.
+    * Uses an incredibly complex backing off algorithm so that long requests don't have to check as often.
+    *
+    * @param    $attempts      int    The number of checks so far
+    * @param    $maxAttempts    int User specified maximum number of checks
+    *
+    * @return    false to stop checking OR the number of seconds for the next sleep
+    */
+    protected function getSleepSeconds($attempts, $maxAttempts = null)
+    {
+        if ($maxAttempts && $attempts >= $maxAttempts) {
+            return false;
+        }
+        
+        // very complex.
+        return $attempts * $attempts;
+    }
+    
+
+    protected function returnResponse($response, $key = null)
+    {
+        if (isset($response['status']) && 0 === strpos($response['status'], 'error')) {
+            throw new AdobeDigitalMarketing_Api_ReportError($response['statusMsg'], $response['status']);
+        }
+
+        return parent::returnResponse($response, $key);
     }
 }

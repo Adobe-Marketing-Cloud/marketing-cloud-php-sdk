@@ -15,8 +15,9 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
     protected $options = array(
         'protocol'    => 'https',
         'api_version' => '1.3',
-        'url'         => ':protocol://api.omniture.com/admin/:api_version/rest/?method=:method',
-        'user_agent'  => 'php-adobedigitalmarketing-api (http://github.com/Adobe-Digital-Marketing)',
+        'endpoint'    => 'api.omniture.com',
+        'url'         => ':protocol://:endpoint/admin/:api_version/rest/?method=:method',
+        'user_agent'  => 'adobe-digital-marketing-php-sdk (http://github.com/Adobe-Digital-Marketing)',
         'http_port'   => 443,
         'timeout'     => 20,
         'username'    => null,
@@ -98,6 +99,7 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
         $url = strtr($options['url'], array(
           ':api_version' => $this->options['api_version'],
           ':protocol'    => $this->options['protocol'],
+          ':endpoint'    => $this->options['endpoint'],
           ':method'      => $method
         ));
 
