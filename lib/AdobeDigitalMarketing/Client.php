@@ -138,6 +138,21 @@ class AdobeDigitalMarketing_Client
     }
 
     /**
+     * Get the permissions API
+     *
+     * @return  AdobeDigitalMarketing_Api_Permissions  the permissions API
+     */
+    public function getPermissionsApi($options = array())
+    {
+        if(!isset($this->apis['permissions']))
+        {
+            $this->apis['permissions'] = new AdobeDigitalMarketing_Api_Permissions($this, $options);
+        }
+
+        return $this->apis['permissions'];
+    }
+
+    /**
      * Inject another API instance
      *
      * @param   string                $name the API name
