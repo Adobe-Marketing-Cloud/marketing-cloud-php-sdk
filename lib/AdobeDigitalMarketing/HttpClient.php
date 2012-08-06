@@ -150,7 +150,10 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
         switch ($this->options['format'])
         {
             case 'json':
-                return json_decode($response, true);
+                if (null === $json = json_decode($response, true)) {
+                    throw new AdobeDigitalMarketing_HttpClient_Exception("Response is not in JSON format: \n\n".$response);
+                }
+                return $json;
 
             case 'jsonp':
                 throw new LogicException("format 'jsonp' not yet supported by this library");
