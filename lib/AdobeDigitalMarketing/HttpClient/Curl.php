@@ -62,7 +62,7 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
     protected function generateWsseHeader($username, $secret)
     {
         $nonce = md5(rand(), true);
-        $created = gmdate('Y-m-dTH:i:sZ');
+        $created = gmdate('Y-m-d H:i:s T');
 
         $digest = base64_encode(sha1($nonce.$created.$secret,true));
         $b64nonce = base64_encode($nonce);
