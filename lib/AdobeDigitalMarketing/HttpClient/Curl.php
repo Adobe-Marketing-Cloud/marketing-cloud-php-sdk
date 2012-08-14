@@ -25,7 +25,24 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
         }
 
         $curlOptions = array();
+        $headers = array();
 
+        if ('POST' === $httpMethod) {
+            $curlOptions += array(
+                CURLOPT_POST  => true,
+            );
+        }
+        elseif ('PUT' === $httpMethod) {
+            $curlOptions += array(
+                CURLOPT_POST  => true, // This is so cURL doesn't strip CURLOPT_POSTFIELDS
+                CURLOPT_CUSTOMREQUEST => 'PUT',
+            );
+        }
+        elseif ('DELETE' === $httpMethod) {
+            $curlOptions += array(
+                CURLOPT_CUSTOMREQUEST => 'DELETE',
+            );
+        }
         if (!empty($parameters))
         {
             if('GET' === $httpMethod)
@@ -36,11 +53,14 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
             else
             {
                 $curlOptions += array(
-                    CURLOPT_POST        => true,
                     CURLOPT_POSTFIELDS  => json_encode($parameters)
                 );
             }
+        } else {
+            $headers[] = 'Content-Length: 0';
         }
+        
+        $headers = $this->getAuthService()->addAuthHeaders($headers, $options);
 
         $this->debug('send '.$httpMethod.' request: '.$url);
 
@@ -51,28 +71,12 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
             CURLOPT_FOLLOWLOCATION  => true,
             CURLOPT_RETURNTRANSFER  => true,
             CURLOPT_TIMEOUT         => $this->options['timeout'],
-            CURLOPT_HTTPHEADER      => array($this->generateWsseHeader($options['username'], $options['secret'])),
+            CURLOPT_HTTPHEADER      => $headers,
         );
 
         $response = $this->doCurlCall($curlOptions);
 
-        return $response['response'];
-    }
-    
-    protected function generateWsseHeader($username, $secret)
-    {
-        $nonce = md5(rand(), true);
-        $created = gmdate('Y-m-dTH:i:sZ');
-
-        $digest = base64_encode(sha1($nonce.$created.$secret,true));
-        $b64nonce = base64_encode($nonce);
-
-        return sprintf('X-WSSE: UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"',
-          $username,
-          $digest,
-          $b64nonce,
-          $created
-        );
+        return $response;
     }
   
     protected function doCurlCall(array $curlOptions)

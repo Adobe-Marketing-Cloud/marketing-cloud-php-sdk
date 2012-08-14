@@ -26,14 +26,20 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
         'limit'       => false,
         'debug'       => false
     );
+    
+    protected $auth;
 
     /**
      * Instanciate a new request
      *
      * @param  array   $options  Request options
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = array(), AdobeDigitalMarketing_AuthInterface $auth = null)
     {
+        if (is_null($auth)) {
+            $auth = new AdobeDigitalMarketing_Auth_Wsse();
+        }
+        $this->auth = $auth;
         $this->configure($options);
     }
 
@@ -138,7 +144,16 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
     {
         return isset($this->options[$name]) ? $this->options[$name] : $default;
     }
-
+    
+    public function getAuthService()
+    {
+        return $this->auth;
+    }
+    
+    public function setAuthService(AdobeDigitalMarketing_AuthInterface $auth)
+    {
+        $this->auth = $auth;
+    }
 
     /**
      * Get a JSON response and transform it to a PHP array
@@ -150,7 +165,10 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
         switch ($this->options['format'])
         {
             case 'json':
-                return json_decode($response, true);
+                if (null === $json = json_decode($response['response'], true)) {
+                    throw new AdobeDigitalMarketing_HttpClient_Exception("Response is not in JSON format: \n\n".print_r($response, true));
+                }
+                return $json;
 
             case 'jsonp':
                 throw new LogicException("format 'jsonp' not yet supported by this library");

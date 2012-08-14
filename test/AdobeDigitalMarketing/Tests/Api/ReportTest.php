@@ -21,8 +21,12 @@ class AdobeDigitalMarketing_Tests_Api_ReportTest extends AdobeDigitalMarketing_T
         $response = $api->queueRanked(array(
            'reportSuiteID' => $this->reportSuite,
            'date'          => date('Y-m-d'),
-           'metrics'       => array('pageviews'),
-           'elements'      => array('eVar1'),
+           'metrics'       => array(
+               array('id' => 'pageviews'),
+            ),
+           'elements'      => array(
+               array('id' => 'evar1'),
+            ),
         ));
         
         if (isset($response['reportID'])) {
@@ -38,8 +42,12 @@ class AdobeDigitalMarketing_Tests_Api_ReportTest extends AdobeDigitalMarketing_T
         $response = $api->getRankedReport(array(
            'reportSuiteID' => $this->reportSuite,
            'date'          => date('Y-m-d'),
-           'metrics'       => array('pageviews'),
-           'elements'      => array('eVar1'),
+           'metrics'       => array(
+               array('id' => 'pageviews'),
+            ),
+           'elements'      => array(
+               array('id' => 'evar1'),
+            ),
         ));
         
         $this->assertTrue(isset($response['data']));
