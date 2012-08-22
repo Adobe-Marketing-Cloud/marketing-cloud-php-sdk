@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Api calls for getting data about artists.
+ * Api calls for getting data about reports.
  *
  * @link      https://developer.omniture.com/en_US/documentation/sitecatalyst-reporting/c-reporting-methods
  * @author    Brent Shaffer <bshafs at gmail dot com>

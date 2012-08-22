@@ -8,8 +8,12 @@
  */
 class AdobeDigitalMarketing_Auth_Wsse implements AdobeDigitalMarketing_AuthInterface
 {
-    public function addAuthHeaders($headers, $options)
+    public function setAuthHeadersAndParameters(array $headers, array $parameters, array $options = array())
     {
+        if(!$options['username'] || !$options['secret']) {
+            throw new AdobeDigitalMarketing_Auth_Exception("username and secret must be set before making a request");
+        }
+
         $username = $options['username'];
         $secret   = $options['secret'];
         $nonce = md5(rand());
@@ -25,6 +29,6 @@ class AdobeDigitalMarketing_Auth_Wsse implements AdobeDigitalMarketing_AuthInter
           $created
         );
         
-        return $headers;
+        return array($headers, $parameters);
     }
 }

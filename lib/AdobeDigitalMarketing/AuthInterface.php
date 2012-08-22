@@ -2,5 +2,5 @@
 
 interface AdobeDigitalMarketing_AuthInterface
 {
-    public function addAuthHeaders($headers, $options);
+    public function setAuthHeadersAndParameters(array $headers, array $parameters, array $options = array());
 }

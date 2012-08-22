@@ -153,6 +153,21 @@ class AdobeDigitalMarketing_Client
     }
 
     /**
+     * Get the company API
+     *
+     * @return  AdobeDigitalMarketing_Api_Company  the company API
+     */
+    public function getCompanyApi($options = array())
+    {
+        if(!isset($this->apis['company']))
+        {
+            $this->apis['company'] = new AdobeDigitalMarketing_Api_Company($this, $options);
+        }
+
+        return $this->apis['company'];
+    }
+
+    /**
      * Inject another API instance
      *
      * @param   string                $name the API name

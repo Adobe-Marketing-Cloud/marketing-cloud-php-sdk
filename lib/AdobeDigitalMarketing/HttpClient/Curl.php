@@ -19,11 +19,6 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
     */
     protected function doRequest($url, array $parameters = array(), $httpMethod = 'GET', array $options = array())
     {
-        if(!$options['username'] || !$options['secret'])
-        {
-            throw new AdobeDigitalMarketing_HttpClient_AuthenticationException("username and secret must be set before making a request");
-        }
-
         $curlOptions = array();
         $headers = array();
 
@@ -43,6 +38,11 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
                 CURLOPT_CUSTOMREQUEST => 'DELETE',
             );
         }
+        
+        if ($auth = $this->getAuthService()) {
+            list($headers, $parameters) = $auth->setAuthHeadersAndParameters($headers, $parameters, $options);
+        }
+        
         if (!empty($parameters))
         {
             if('GET' === $httpMethod)
@@ -59,8 +59,6 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
         } else {
             $headers[] = 'Content-Length: 0';
         }
-        
-        $headers = $this->getAuthService()->addAuthHeaders($headers, $options);
 
         $this->debug('send '.$httpMethod.' request: '.$url);
 
@@ -72,6 +70,8 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
             CURLOPT_RETURNTRANSFER  => true,
             CURLOPT_TIMEOUT         => $this->options['timeout'],
             CURLOPT_HTTPHEADER      => $headers,
+            CURLOPT_SSL_VERIFYPEER  => false,
+            CURLOPT_PROXY => 'localhost:8888',
         );
 
         $response = $this->doCurlCall($curlOptions);

@@ -3,7 +3,7 @@
 class AdobeDigitalMarketing_Tests_HttpClient_CurlTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException AdobeDigitalMarketing_HttpClient_AuthenticationException
+     * @expectedException AdobeDigitalMarketing_Auth_Exception
      */
     public function testDoRequestWithoutAuthentication()
     {

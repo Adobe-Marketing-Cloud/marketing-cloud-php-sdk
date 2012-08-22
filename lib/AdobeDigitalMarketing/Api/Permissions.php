@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Api calls for getting data about artists.
+ * Api calls for getting data about permissions.
  *
  * @link      https://developer.omniture.com/en_US/documentation/omniture-administration/c-api-admin-methods-permissions
  * @author    Brent Shaffer <bshafs at gmail dot com>
@@ -23,8 +23,12 @@ class AdobeDigitalMarketing_Api_Permissions extends AdobeDigitalMarketing_Api
         $response = $this->post('Permissions.Authenticate', array(
             'login'    => $username,
             'password' => $password,
-        ));
-
-        return $this->returnResponse($response);
+        ), array('format' => 'text'));
+        
+        if ($response != 'true' && $response != 'false') {
+            throw new AdobeDigitalMarketing_HttpClient_Exception("Received unexpected response for Permissions.Authenticate: ".print_r($response, true));
+        }
+        
+        return (bool) $response;
     }
 }
