@@ -71,7 +71,6 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
             CURLOPT_TIMEOUT         => $this->options['timeout'],
             CURLOPT_HTTPHEADER      => $headers,
             CURLOPT_SSL_VERIFYPEER  => false,
-            CURLOPT_PROXY => 'localhost:8888',
         );
 
         $response = $this->doCurlCall($curlOptions);

@@ -3,13 +3,13 @@
 /**
  * Simple PHP AdobeDigitalMarketing API
  *
- * @tutorial  http://AdobeDigitalMarketing.com/ornicar/php-AdobeDigitalMarketing-api/blob/master/README.markdown
+ * @tutorial  http://github.com/Adobe-Digital-Marketing/adobe-digital-marketing-php-sdk/blob/master/README.md
  * @version   2.6
  * @author    Brent Shaffer <bshafs at gmail dot com>
  * @license   MIT License
  *
- * Website: http://AdobeDigitalMarketing.com/ornicar/php-AdobeDigitalMarketing-api
- * Tickets: http://AdobeDigitalMarketing.com/ornicar/php-AdobeDigitalMarketing-api/issues
+ * Website: http://github.com/Adobe-Digital-Marketing/adobe-digital-marketing-php-sdk
+ * Tickets: http://github.com/Adobe-Digital-Marketing/adobe-digital-marketing-php-sdk/issues
  */
 class AdobeDigitalMarketing_Client
 {
@@ -44,7 +44,7 @@ class AdobeDigitalMarketing_Client
             $this->httpClient = $httpClient;
         }
     }
-
+    
     /**
      * Authenticate a user for all next requests
      *
@@ -52,11 +52,11 @@ class AdobeDigitalMarketing_Client
      * @param  string         $secret        AdobeDigitalMarketing Web Services secret
      * @return AdobeDigitalMarketingApi               fluent interface
      */
-    public function authenticate($username, $secret)
+    public function authenticate()
     {
-        $this->getHttpClient()
-            ->setOption('username', $username)
-            ->setOption('secret', $secret);
+        $auth = $this->getHttpClient()->getAuthService();
+        
+        call_user_func_array(array($auth, 'authenticate'), func_get_args());
 
         return $this;
     }

@@ -16,7 +16,7 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
         'protocol'    => 'https',
         'api_version' => '1.3',
         'endpoint'    => 'api.omniture.com',
-        'url'         => ':protocol://:endpoint/admin/:api_version/rest/?method=:method',
+        'url'         => ':protocol://:endpoint/:path',
         'user_agent'  => 'adobe-digital-marketing-php-sdk (http://github.com/Adobe-Digital-Marketing)',
         'http_port'   => 443,
         'timeout'     => 20,
@@ -72,32 +72,32 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
      * Send a GET request
      * @see send
      */
-    public function get($method, array $parameters = array(), array $options = array())
+    public function get($path, array $parameters = array(), array $options = array())
     {
-        return $this->request($method, $parameters, 'GET', $options);
+        return $this->request($path, $parameters, 'GET', $options);
     }
 
     /**
      * Send a POST request
      * @see send
      */
-    public function post($method, array $parameters = array(), array $options = array())
+    public function post($path, array $parameters = array(), array $options = array())
     {
-        return $this->request($method, $parameters, 'POST', $options);
+        return $this->request($path, $parameters, 'POST', $options);
     }
 
     /**
      * Send a request to the server, receive a response,
      * decode the response and returns an associative array
      *
-     * @param  string   $method         Requested API method
+     * @param  string   $path           Requested API resource path
      * @param  array    $parameters     Parameters
      * @param  string   $httpMethod     HTTP method to use
      * @param  array    $options        Request options
      *
      * @return array                    Data
      */
-    public function request($method, array $parameters = array(), $httpMethod = 'GET', array $options = array())
+    public function request($path, array $parameters = array(), $httpMethod = 'GET', array $options = array())
     {
         $options = array_merge($this->options, $options);
 
@@ -106,7 +106,7 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
           ':api_version' => $this->options['api_version'],
           ':protocol'    => $this->options['protocol'],
           ':endpoint'    => $this->options['endpoint'],
-          ':method'      => $method
+          ':path'        => $path
         ));
 
         // get encoded response
@@ -178,9 +178,6 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
 
             case 'xspf':
                 throw new LogicException("format 'xspf' not yet supported by this library");
-
-            case 'text':
-                return $response['response'];
         }
 
         throw new LogicException(__CLASS__.' only supports json, json, xml, and xspf formats, '.$this->options['format'].' given.');

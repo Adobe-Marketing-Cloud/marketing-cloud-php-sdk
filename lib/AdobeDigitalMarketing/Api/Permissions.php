@@ -7,7 +7,7 @@
  * @author    Brent Shaffer <bshafs at gmail dot com>
  * @license   MIT License
  */
-class AdobeDigitalMarketing_Api_Permissions extends AdobeDigitalMarketing_Api
+class AdobeDigitalMarketing_Api_Permissions extends AdobeDigitalMarketing_Api_SuiteApi
 {
     /**
      * Internal method to authenticate a set of credentials
@@ -23,12 +23,8 @@ class AdobeDigitalMarketing_Api_Permissions extends AdobeDigitalMarketing_Api
         $response = $this->post('Permissions.Authenticate', array(
             'login'    => $username,
             'password' => $password,
-        ), array('format' => 'text'));
+        ));
         
-        if ($response != 'true' && $response != 'false') {
-            throw new AdobeDigitalMarketing_HttpClient_Exception("Received unexpected response for Permissions.Authenticate: ".print_r($response, true));
-        }
-        
-        return (bool) $response;
+		return $this->returnResponse($response);
     }
 }

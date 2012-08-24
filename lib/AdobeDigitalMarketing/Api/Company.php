@@ -7,12 +7,10 @@
  * @author    Brent Shaffer <bshafs at gmail dot com>
  * @license   MIT License
  */
-class AdobeDigitalMarketing_Api_Company extends AdobeDigitalMarketing_Api
+class AdobeDigitalMarketing_Api_Company extends AdobeDigitalMarketing_Api_SuiteApi
 {
     /**
-     * Internal method to authenticate a set of credentials
-     * Credentials can be found in the SiteCatalyst Admin Console
-     *   Admin > Admin Console > Company > Web Services
+     * Retrieve report suites for your company
      *
      * @return  array - list of report suites
      */

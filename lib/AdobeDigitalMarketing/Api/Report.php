@@ -7,7 +7,7 @@
  * @author    Brent Shaffer <bshafs at gmail dot com>
  * @license   MIT License
  */
-class AdobeDigitalMarketing_Api_Report extends AdobeDigitalMarketing_Api
+class AdobeDigitalMarketing_Api_Report extends AdobeDigitalMarketing_Api_SuiteApi
 {
     /**
      * Submits an Overtime report request. Overtime reports display the specified metrics over a defined time period. 
