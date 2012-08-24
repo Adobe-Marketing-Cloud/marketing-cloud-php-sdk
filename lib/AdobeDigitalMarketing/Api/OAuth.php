@@ -18,7 +18,7 @@ class AdobeDigitalMarketing_Api_OAuth extends AdobeDigitalMarketing_Api
         ));
 
         if (!isset($response['access_token'])) {
-            return false;
+            return null;
         }
         
         // automatically set the token for future requests

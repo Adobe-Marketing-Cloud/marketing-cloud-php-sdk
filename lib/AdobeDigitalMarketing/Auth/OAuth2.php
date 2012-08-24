@@ -20,6 +20,12 @@ class AdobeDigitalMarketing_Auth_OAuth2 extends AdobeDigitalMarketing_Auth_HttpB
         parent::authenticate($client_id, $client_secret);
     }
     
+    // allows the setting of an access token later in the request, as not all oauth requests require an access token
+    public function setAccessToken($access_token)
+    {
+        $this->access_token = $access_token;
+    }
+    
     public function setAuthHeadersAndParameters(array $headers, array $parameters, array $options = array())
     {
         if(!$this->client_id || !$this->client_secret) {

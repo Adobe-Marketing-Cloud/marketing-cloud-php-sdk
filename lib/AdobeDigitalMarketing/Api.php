@@ -76,6 +76,14 @@ abstract class AdobeDigitalMarketing_Api implements AdobeDigitalMarketing_ApiInt
     {
         return isset($this->options[$name]) ? $this->options[$name] : $default;
     }
+    
+    /**
+     * returns the most recent response for debugging purposes (see AdobeDigitalMarketing_HttpClient::getLastResponse)
+     */
+    public function getLastResponse()
+    {
+        return $this->client->getHttpClient()->getLastResponse();
+    }
 
     protected function returnResponse($response, $key = null)
     {

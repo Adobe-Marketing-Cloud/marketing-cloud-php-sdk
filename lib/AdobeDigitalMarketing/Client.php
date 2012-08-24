@@ -72,6 +72,18 @@ class AdobeDigitalMarketing_Client
     }
 
     /**
+     * Set the Auth service on your Http Client
+     *
+     * @return AdobeDigitalMarketingApi               fluent interface
+     */
+    public function setAuthService(AdobeDigitalMarketing_AuthInterface $auth)
+    {
+        $this->getHttpClient()->setAuthService($auth);
+        
+        return $this;
+    }
+
+    /**
      * Call any route, GET method
      * Ex: $api->get('repos/show/my-username/my-repo')
      *
@@ -165,6 +177,22 @@ class AdobeDigitalMarketing_Client
         }
 
         return $this->apis['company'];
+    }
+
+
+    /**
+     * Get the company API
+     *
+     * @return  AdobeDigitalMarketing_Api_Company  the company API
+     */
+    public function getOAuthApi($options = array())
+    {
+        if(!isset($this->apis['oauth']))
+        {
+            $this->apis['oauth'] = new AdobeDigitalMarketing_Api_OAuth($this, $options);
+        }
+
+        return $this->apis['oauth'];
     }
 
     /**

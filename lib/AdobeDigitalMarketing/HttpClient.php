@@ -28,6 +28,7 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
     );
     
     protected $auth;
+    protected $lastResponse;
 
     /**
      * Instanciate a new request
@@ -111,6 +112,7 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
 
         // get encoded response
         $response = $this->doRequest($url, $parameters, $httpMethod, $options);
+        $this->lastResponse = $response; // for debugging (see getLastResponse)
 
         // decode response
         $response = $this->decodeResponse($response, $options);
@@ -154,6 +156,14 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
     {
         $this->auth = $auth;
     }
+    
+    /**
+     * returns the most recent response for debugging purposes
+     */
+    public function getLastResponse()
+    {
+        return $this->lastResponse;
+    }
 
     /**
      * Get a JSON response and transform it to a PHP array
@@ -165,7 +175,7 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
         switch ($this->options['format'])
         {
             case 'json':
-                if (null === $json = json_decode($response['response'], true)) {
+                if ((null === $json = json_decode($response['response'], true)) && ($this->options['debug'] === true)) {
                     throw new AdobeDigitalMarketing_HttpClient_Exception("Response is not in JSON format: \n\n".print_r($response, true));
                 }
                 return $json;
