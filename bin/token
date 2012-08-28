@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+require dirname(__FILE__).'/../lib/AdobeDigitalMarketing/Autoloader.php';
+AdobeDigitalMarketing_Autoloader::register();
+
+$auth = new AdobeDigitalMarketing_Auth_OAuth2();
+$adm = new AdobeDigitalMarketing_Client(new AdobeDigitalMarketing_HttpClient_Curl(array(), $auth));
+
+$adm->authenticate($argv[1], $argv[2]);
+
+$token = $adm->getOAuthApi()->getTokenFromUserCredentials($argv[3], $argv[4]);
+if ($token) {
+  echo "TOKEN: $token\n";
+} else {
+  print_r($adm->getLastResponse());
+}

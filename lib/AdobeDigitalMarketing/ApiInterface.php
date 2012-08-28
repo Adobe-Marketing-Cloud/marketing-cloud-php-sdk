@@ -8,4 +8,5 @@
  */
 interface AdobeDigitalMarketing_ApiInterface
 {
+    public function getLastResponse();
 }

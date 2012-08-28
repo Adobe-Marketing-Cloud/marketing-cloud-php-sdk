@@ -82,7 +82,7 @@ abstract class AdobeDigitalMarketing_Api implements AdobeDigitalMarketing_ApiInt
      */
     public function getLastResponse()
     {
-        return $this->client->getHttpClient()->getLastResponse();
+        return $this->client->getLastResponse();
     }
 
     protected function returnResponse($response, $key = null)

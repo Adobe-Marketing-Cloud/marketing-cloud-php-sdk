@@ -56,7 +56,8 @@ class AdobeDigitalMarketing_Client
     {
         $auth = $this->getHttpClient()->getAuthService();
         
-        call_user_func_array(array($auth, 'authenticate'), func_get_args());
+        $args = func_get_args(); // php 5.2 requires this be on a separate line
+        call_user_func_array(array($auth, 'authenticate'), $args);
 
         return $this;
     }
@@ -135,6 +136,22 @@ class AdobeDigitalMarketing_Client
     }
 
     /**
+     * Get the suite API
+     * generic API to call get/post directly
+     *
+     * @return  AdobeDigitalMarketing_Api_Report  the report API
+     */
+    public function getSuiteApi($options = array())
+    {
+        if(!isset($this->apis['suite']))
+        {
+            $this->apis['suite'] = new AdobeDigitalMarketing_Api_SuiteApi($this, $options);
+        }
+
+        return $this->apis['suite'];
+    }
+    
+    /**
      * Get the report API
      *
      * @return  AdobeDigitalMarketing_Api_Report  the report API
@@ -207,6 +224,14 @@ class AdobeDigitalMarketing_Client
         $this->apis[$name] = $instance;
 
         return $this;
+    }
+    
+    /**
+     * returns the most recent response for debugging purposes (see AdobeDigitalMarketing_HttpClient::getLastResponse)
+     */
+    public function getLastResponse()
+    {
+        return $this->getHttpClient()->getLastResponse();
     }
 
     /**

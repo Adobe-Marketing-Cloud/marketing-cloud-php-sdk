@@ -6,7 +6,7 @@
  * @author    Brent Shaffer <bshafs at gmail dot com>
  * @license   MIT License
  */
-abstract class AdobeDigitalMarketing_Api_SuiteApi extends AdobeDigitalMarketing_Api
+class AdobeDigitalMarketing_Api_SuiteApi extends AdobeDigitalMarketing_Api
 {
     /**
      * Call any path, GET method
@@ -17,7 +17,7 @@ abstract class AdobeDigitalMarketing_Api_SuiteApi extends AdobeDigitalMarketing_
      * @param   array   $requestOptions   reconfigure the request
      * @return  array                     data returned
      */
-    protected function get($method, array $parameters = array(), $requestOptions = array())
+    public function get($method, array $parameters = array(), $requestOptions = array())
     {
         return parent::get($this->getSuitePath($method), $parameters, $requestOptions);
     }
@@ -31,7 +31,7 @@ abstract class AdobeDigitalMarketing_Api_SuiteApi extends AdobeDigitalMarketing_
      * @param   array   $requestOptions   reconfigure the request
      * @return  array                     data returned
      */
-    protected function post($method, array $parameters = array(), $requestOptions = array())
+    public function post($method, array $parameters = array(), $requestOptions = array())
     {
         return parent::post($this->getSuitePath($method), $parameters, $requestOptions);
     }
