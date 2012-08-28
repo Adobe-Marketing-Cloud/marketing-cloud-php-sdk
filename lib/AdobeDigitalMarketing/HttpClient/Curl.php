@@ -55,6 +55,7 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
                 $curlOptions += array(
                     CURLOPT_POSTFIELDS  => json_encode($parameters)
                 );
+                $headers[] = 'Content-Type: application/json';
             }
         } else {
             $headers[] = 'Content-Length: 0';

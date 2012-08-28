@@ -35,7 +35,6 @@ class AdobeDigitalMarketing_Auth_OAuth2 extends AdobeDigitalMarketing_Auth_HttpB
         if($this->access_token) {
             $parameters['oauth_token'] = $this->access_token;
         }
-        $headers[] = 'Content-Type: application/json';
         
         return parent::setAuthHeadersAndParameters($headers, $parameters, $options);
     }
