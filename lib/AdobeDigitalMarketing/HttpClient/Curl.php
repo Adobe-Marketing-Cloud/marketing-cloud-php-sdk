@@ -71,6 +71,7 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
             CURLOPT_RETURNTRANSFER  => true,
             CURLOPT_TIMEOUT         => $this->options['timeout'],
             CURLOPT_HTTPHEADER      => $headers,
+			CURLOPT_SSL_VERIFYPEER  => !isset($this->options['verifyssl']) || $this->options['verifyssl'],
         );
 
         $response = $this->doCurlCall($curlOptions);
