@@ -113,6 +113,34 @@ class AdobeDigitalMarketing_Client
     }
 
     /**
+     * Call any route, PUT method
+     * Ex: $api->put('repos/show/my-username', array('email' => 'my-new-email@provider.org'))
+     *
+     * @param   string  $route            the AdobeDigitalMarketing route
+     * @param   array   $parameters       PUT parameters
+     * @param   array   $requestOptions   reconfigure the request
+     * @return  array                     data returned
+     */
+    public function put($route, array $parameters = array(), $requestOptions = array())
+    {
+        return $this->getHttpClient()->put($route, $parameters, $requestOptions);
+    }
+
+    /**
+     * Call any route, DELETE method
+     * Ex: $api->delete('repos/show/my-username', array('email' => 'my-new-email@provider.org'))
+     *
+     * @param   string  $route            the AdobeDigitalMarketing route
+     * @param   array   $parameters       DELETE parameters
+     * @param   array   $requestOptions   reconfigure the request
+     * @return  array                     data returned
+     */
+    public function delete($route, array $parameters = array(), $requestOptions = array())
+    {
+        return $this->getHttpClient()->delete($route, $parameters, $requestOptions);
+    }
+
+    /**
      * Get the httpClient
      *
      * @return  AdobeDigitalMarketing_HttpClient_Interface   an httpClient instance

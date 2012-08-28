@@ -88,6 +88,24 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
     }
 
     /**
+     * Send a PUT request
+     * @see send
+     */
+    public function put($method, array $parameters = array(), array $options = array())
+    {
+        return $this->request($method, $parameters, 'PUT', $options);
+    }
+
+    /**
+     * Send a DELETE request
+     * @see send
+     */
+    public function delete($method, array $parameters = array(), array $options = array())
+    {
+        return $this->request($method, $parameters, 'DELETE', $options);
+    }
+
+    /**
      * Send a request to the server, receive a response,
      * decode the response and returns an associative array
      *
