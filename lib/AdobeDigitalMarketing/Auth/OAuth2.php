@@ -6,36 +6,19 @@
  * @author    Brent Shaffer <bshafs at gmail dot com>
  * @license   MIT License
  */
-class AdobeDigitalMarketing_Auth_OAuth2 extends AdobeDigitalMarketing_Auth_HttpBasic
+class AdobeDigitalMarketing_Auth_OAuth2 implements AdobeDigitalMarketing_AuthInterface
 {
-    private $client_id;
-    private $client_secret;
     private $access_token;
     
-    public function authenticate($client_id, $client_secret, $access_token = null)
-    {
-        $this->client_id = $client_id;
-        $this->client_secret = $client_secret;
-        $this->access_token = $access_token;
-        parent::authenticate($client_id, $client_secret);
-    }
-    
-    // allows the setting of an access token later in the request, as not all oauth requests require an access token
-    public function setAccessToken($access_token)
+    public function authenticate($access_token)
     {
         $this->access_token = $access_token;
     }
     
     public function setAuthHeadersAndParameters(array $headers, array $parameters, array $options = array())
     {
-        if(!$this->client_id || !$this->client_secret) {
-            throw new AdobeDigitalMarketing_Auth_Exception("client_id and client_secret must be set before making a request");
-        }
+        $headers[] = sprintf('Authorization: Bearer %s', $this->access_token);
         
-        if($this->access_token) {
-            $parameters['oauth_token'] = $this->access_token;
-        }
-        
-        return parent::setAuthHeadersAndParameters($headers, $parameters, $options);
+        return array($headers, $parameters);
     }
 }

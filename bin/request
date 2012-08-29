@@ -7,11 +7,11 @@ AdobeDigitalMarketing_Autoloader::register();
 $auth = new AdobeDigitalMarketing_Auth_OAuth2();
 $adm = new AdobeDigitalMarketing_Client(new AdobeDigitalMarketing_HttpClient_Curl(array(), $auth));
 
-$adm->authenticate($argv[1], $argv[2], $argv[3]);
+$adm->authenticate($argv[1]);
 
 $parameters = array();
-parse_str(isset($argv[5]) ? $argv[5] : '', $parameters);
-$response = $adm->getSuiteApi()->post($argv[4], $parameters);
+parse_str(isset($argv[3]) ? $argv[3] : '', $parameters);
+$response = $adm->getSuiteApi()->post($argv[2], $parameters);
 
 if (is_string($response)) {
 	echo "$response\n";
