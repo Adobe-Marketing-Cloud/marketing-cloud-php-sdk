@@ -24,9 +24,10 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
         'secret'      => null,
         'format'      => 'json',
         'limit'       => false,
-        'debug'       => false
+        'debug'       => false,
+        'proxy'       => null,
     );
-    
+
     protected $auth;
     protected $lastResponse;
 
@@ -164,17 +165,17 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
     {
         return isset($this->options[$name]) ? $this->options[$name] : $default;
     }
-    
+
     public function getAuthService()
     {
         return $this->auth;
     }
-    
+
     public function setAuthService(AdobeDigitalMarketing_AuthInterface $auth)
     {
         $this->auth = $auth;
     }
-    
+
     /**
      * returns the most recent response for debugging purposes
      */

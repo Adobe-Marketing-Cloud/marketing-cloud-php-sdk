@@ -24,7 +24,7 @@ class AdobeDigitalMarketing_Api_Permissions extends AdobeDigitalMarketing_Api_Su
             'login'    => $username,
             'password' => $password,
         ));
-        
+
 		return $this->returnResponse($response);
     }
 }

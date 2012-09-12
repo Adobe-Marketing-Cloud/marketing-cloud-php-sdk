@@ -29,7 +29,7 @@ class AdobeDigitalMarketing_Autoloader
         if (0 !== strpos($class, 'AdobeDigitalMarketing')) {
             return;
         }
-        
+
         if (file_exists($file = dirname(__FILE__).'/../'.str_replace('_', '/', $class).'.php')) {
             require $file;
         }

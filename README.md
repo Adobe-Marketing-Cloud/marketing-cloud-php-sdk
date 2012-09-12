@@ -1,6 +1,6 @@
 # Adobe Digital Marketing PHP SDK
 
-A simple, Object Oriented wrapper for the Adobe Digital Marketing Suite APIs written in PHP5.  
+A simple, Object Oriented wrapper for the Adobe Digital Marketing Suite APIs written in PHP5.
 This library is modeled after the [php-github-api](https://github.com/ornicar/php-github-api) library built by [ornicar](https://github.com/ornicar)
 
 Uses the [Adobe Digital Marketing Suite APIs](http://developer.omniture.com/en_US/documentation). Default version is 1.3, but 1.2 is compatible.
@@ -45,7 +45,7 @@ Next requests will not be authenticated
 
 ## Reports
 
-For queueing SiteCatalyst reports  
+For queueing SiteCatalyst reports
 Wraps [SiteCatalyst Report API](http://developer.omniture.com/en_US/documentation/sitecatalyst-reporting).
 
     $reportApi = $adm->getReportApi();
@@ -53,12 +53,12 @@ Wraps [SiteCatalyst Report API](http://developer.omniture.com/en_US/documentatio
 ### Run a Ranked Report
 
     $response = $reportApi->queueRanked(array(
-        'reportSuiteID' => 'your-id', 
+        'reportSuiteID' => 'your-id',
         'date'     => date('Y-m-d'),
         'metrics'  => array('pageviews'),
         'elements' => array('eVar1'),
     ));
-    
+
     print_r($response);
 
 The above code will render the status of your queued report, which will look something like this:
@@ -69,7 +69,7 @@ The above code will render the status of your queued report, which will look som
       [statusMsg] => Your report has been queued
       [reportID] => 123456789
     )
-    
+
 ### Retrieve a Queued Report
 
 Once the report ID is retrieved for the trended, ranked, or overtime report, use the Report.GetReport API call to retrieve the report
@@ -77,7 +77,7 @@ Once the report ID is retrieved for the trended, ranked, or overtime report, use
     $response = $reportApi->queueRanked(array(
         //... (see above)
     ));
-    
+
     $reportId = $response['reportID'];
 
     do {

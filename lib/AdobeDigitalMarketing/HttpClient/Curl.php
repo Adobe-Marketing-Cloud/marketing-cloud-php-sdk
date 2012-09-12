@@ -38,11 +38,11 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
                 CURLOPT_CUSTOMREQUEST => 'DELETE',
             );
         }
-        
+
         if ($auth = $this->getAuthService()) {
             list($headers, $parameters) = $auth->setAuthHeadersAndParameters($headers, $parameters, $options);
         }
-        
+
         if (!empty($parameters))
         {
             if('GET' === $httpMethod)
@@ -74,11 +74,15 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
             CURLOPT_SSL_VERIFYPEER  => !isset($this->options['verifyssl']) || $this->options['verifyssl'],
         );
 
+        if ($options['proxy']) {
+            $curlOptions[CURLOPT_PROXY] = $options['proxy'];
+        }
+
         $response = $this->doCurlCall($curlOptions);
 
         return $response;
     }
-    
+
     protected function generateWsseHeader($username, $secret)
     {
         $nonce = md5(rand());
@@ -94,7 +98,7 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
           $created
         );
     }
-  
+
     protected function doCurlCall(array $curlOptions)
     {
         $curl = curl_init();
@@ -110,7 +114,7 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
 
         return compact('response', 'headers', 'errorNumber', 'errorMessage');
     }
-  
+
     protected function buildQuery($parameters)
     {
         return http_build_query($parameters, '', '&');

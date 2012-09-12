@@ -44,7 +44,7 @@ class AdobeDigitalMarketing_Client
             $this->httpClient = $httpClient;
         }
     }
-    
+
     /**
      * Authenticate a user for all next requests
      *
@@ -55,7 +55,7 @@ class AdobeDigitalMarketing_Client
     public function authenticate()
     {
         $auth = $this->getHttpClient()->getAuthService();
-        
+
         $args = func_get_args(); // php 5.2 requires this be on a separate line
         call_user_func_array(array($auth, 'authenticate'), $args);
 
@@ -80,7 +80,7 @@ class AdobeDigitalMarketing_Client
     public function setAuthService(AdobeDigitalMarketing_AuthInterface $auth)
     {
         $this->getHttpClient()->setAuthService($auth);
-        
+
         return $this;
     }
 
@@ -178,7 +178,7 @@ class AdobeDigitalMarketing_Client
 
         return $this->apis['suite'];
     }
-    
+
     /**
      * Get the report API
      *
@@ -253,7 +253,7 @@ class AdobeDigitalMarketing_Client
 
         return $this;
     }
-    
+
     /**
      * returns the most recent response for debugging purposes (see AdobeDigitalMarketing_HttpClient::getLastResponse)
      */
