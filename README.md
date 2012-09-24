@@ -55,8 +55,12 @@ Wraps [SiteCatalyst Report API](http://developer.omniture.com/en_US/documentatio
     $response = $reportApi->queueRanked(array(
         'reportSuiteID' => 'your-id',
         'date'     => date('Y-m-d'),
-        'metrics'  => array('pageviews'),
-        'elements' => array('eVar1'),
+        'metrics'  => array(
+            array('id' => 'pageviews'),
+        ),
+        'elements' => array(
+            array('id' => 'eVar1'),
+        ),
     ));
 
     print_r($response);
