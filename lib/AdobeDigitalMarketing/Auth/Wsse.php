@@ -10,7 +10,7 @@ class AdobeDigitalMarketing_Auth_Wsse implements AdobeDigitalMarketing_AuthInter
 {
     private $username;
     private $secret;
-    
+
     public function authenticate($username, $secret)
     {
         $this->username = $username;
@@ -35,7 +35,7 @@ class AdobeDigitalMarketing_Auth_Wsse implements AdobeDigitalMarketing_AuthInter
           $b64nonce,
           $created
         );
-        
+
         return array($headers, $parameters);
     }
 }

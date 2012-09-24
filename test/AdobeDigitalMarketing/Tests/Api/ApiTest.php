@@ -73,7 +73,7 @@ abstract class AdobeDigitalMarketing_Tests_ApiTest extends PHPUnit_Framework_Tes
         if (!isset($_SERVER['AdobeDigitalMarketing_Test_Username'])
             || !isset($_SERVER['AdobeDigitalMarketing_Test_Secret'])
             || !isset($_SERVER['AdobeDigitalMarketing_Test_ReportSuite'])) {
-            throw new AdobeDigitalMarketing_HttpClient_Auth_Exception("You must define a username/secret/reportsuite for testing in an environment variable (AdobeDigitalMarketing_Test_Username, AdobeDigitalMarketing_Test_Secret, AdobeDigitalMarketing_Test_ReportSuite)");
+            throw new AdobeDigitalMarketing_Auth_Exception("You must define a username/secret/reportsuite for testing in an environment variable (AdobeDigitalMarketing_Test_Username, AdobeDigitalMarketing_Test_Secret, AdobeDigitalMarketing_Test_ReportSuite)");
         }
 
         $options = array(

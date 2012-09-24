@@ -21,6 +21,6 @@ class AdobeDigitalMarketing_Api_OAuth extends AdobeDigitalMarketing_Api
             return null;
         }
 
-        return $this->returnResponse($response, 'access_token');
+        return $this->returnResponse($response);
     }
 }

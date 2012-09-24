@@ -41,8 +41,8 @@ interface AdobeDigitalMarketing_HttpClientInterface
      * @return AdobeDigitalMarketing_HttpClientInterface The current object instance
      */
     public function setOption($name, $value);
-    
+
     public function getAuthService();
-    
+
     public function setAuthService(AdobeDigitalMarketing_AuthInterface $auth);
 }

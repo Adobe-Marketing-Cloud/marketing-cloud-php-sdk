@@ -9,16 +9,16 @@
 class AdobeDigitalMarketing_Auth_OAuth2 implements AdobeDigitalMarketing_AuthInterface
 {
     private $access_token;
-    
+
     public function authenticate($access_token)
     {
         $this->access_token = $access_token;
     }
-    
+
     public function setAuthHeadersAndParameters(array $headers, array $parameters, array $options = array())
     {
         $headers[] = sprintf('Authorization: Bearer %s', $this->access_token);
-        
+
         return array($headers, $parameters);
     }
 }

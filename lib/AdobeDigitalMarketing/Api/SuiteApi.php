@@ -35,7 +35,7 @@ class AdobeDigitalMarketing_Api_SuiteApi extends AdobeDigitalMarketing_Api
     {
         return parent::post($this->getSuitePath($method), $parameters, $requestOptions);
     }
-    
+
     private function getSuitePath($method)
     {
         return sprintf('admin/%s/rest/?method=%s', $this->client->getHttpClient()->getOption('api_version'), $method);

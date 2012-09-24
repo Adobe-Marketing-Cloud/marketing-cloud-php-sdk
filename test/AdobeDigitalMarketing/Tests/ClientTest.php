@@ -55,12 +55,12 @@ class AdobeDigitalMarketing_Tests_ClientTest extends PHPUnit_Framework_TestCase
         $path      = '/some/path';
         $parameters = array('a' => 'b');
         $options    = array('c' => 'd');
-    
+
         $httpClient = $this->getHttpClientMock();
         $httpClient->expects($this->once())
             ->method('get')
             ->with($path, $parameters, $options);
-    
+
         $client = $this->getClientMockBuilder()
             ->setMethods(array('getHttpClient'))
             ->getMock();
@@ -68,21 +68,21 @@ class AdobeDigitalMarketing_Tests_ClientTest extends PHPUnit_Framework_TestCase
             ->method('getHttpClient')
             ->with()
             ->will($this->returnValue($httpClient));
-    
+
         $client->get($path, $parameters, $options);
     }
-    
+
     public function testPost()
     {
         $path      = '/some/path';
         $parameters = array('a' => 'b');
         $options    = array('c' => 'd');
-    
+
         $httpClient = $this->getHttpClientMock();
         $httpClient->expects($this->once())
             ->method('post')
             ->with($path, $parameters, $options);
-    
+
         $client = $this->getClientMockBuilder()
             ->setMethods(array('getHttpClient'))
             ->getMock();
@@ -90,7 +90,7 @@ class AdobeDigitalMarketing_Tests_ClientTest extends PHPUnit_Framework_TestCase
             ->method('getHttpClient')
             ->with()
             ->will($this->returnValue($httpClient));
-    
+
         $client->post($path, $parameters, $options);
     }
 

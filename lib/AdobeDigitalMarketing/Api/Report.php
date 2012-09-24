@@ -10,12 +10,12 @@
 class AdobeDigitalMarketing_Api_Report extends AdobeDigitalMarketing_Api_SuiteApi
 {
     /**
-     * Submits an Overtime report request. Overtime reports display the specified metrics over a defined time period. 
+     * Submits an Overtime report request. Overtime reports display the specified metrics over a defined time period.
      * Overtime reports can display multiple metrics in a report. The only possible element in an Overtime report is time.
      * https://developer.omniture.com/en_US/documentation/sitecatalyst-reporting/r-queuetrended
      *
      * @param   array $reportDescription  the report description array
-     * @return  array 
+     * @return  array
      *   - reportID: The report ID of the queued report
      */
     public function queueOvertime($reportDescription)
@@ -26,12 +26,12 @@ class AdobeDigitalMarketing_Api_Report extends AdobeDigitalMarketing_Api_SuiteAp
 
         return $this->returnResponse($response);
     }
-    
+
     /**
      * Submits a Ranked report request. Ranked reports display the rankings of the report pages in relation to the metric.
      * Ranked reports can display multiple metrics in a report.
      * Ranked reports have the following characteristics:
-     * 
+     *
      *  * Display the rankings of the report pages in relation to the metric.
      *  * Display multiple metrics in a report, if desired.
      *  * Support multiple elements in a report, if desired.
@@ -39,7 +39,7 @@ class AdobeDigitalMarketing_Api_Report extends AdobeDigitalMarketing_Api_SuiteAp
      * https://developer.omniture.com/en_US/documentation/sitecatalyst-reporting/r-queueranked
      *
      * @param   array $reportDescription  the report description array
-     * @return  array 
+     * @return  array
      *   - reportID: The report ID of the queued report
      */
     public function queueRanked($reportDescription)
@@ -50,13 +50,13 @@ class AdobeDigitalMarketing_Api_Report extends AdobeDigitalMarketing_Api_SuiteAp
 
         return $this->returnResponse($response);
     }
-    
+
     /**
      * Submits a Trended report request. Trended reports display trends for a single metric (revenue, orders, views, etc) and element (product, category, page, etc).
      * https://developer.omniture.com/en_US/documentation/sitecatalyst-reporting/r-queuetrended
      *
      * @param   array $reportDescription  the report description array
-     * @return  array 
+     * @return  array
      *   - reportID: The report ID of the queued report
      */
     public function queueTrended($reportDescription)
@@ -67,7 +67,7 @@ class AdobeDigitalMarketing_Api_Report extends AdobeDigitalMarketing_Api_SuiteAp
 
         return $this->returnResponse($response);
     }
-    
+
     /**
      * Gets a report by report ID
      * https://developer.omniture.com/en_US/documentation/sitecatalyst-reporting/r-getreport
@@ -83,7 +83,7 @@ class AdobeDigitalMarketing_Api_Report extends AdobeDigitalMarketing_Api_SuiteAp
 
         return $this->returnResponse($response);
     }
-    
+
     /**
      * Returns the current status of the specified report without retrieving the report data.
      * https://developer.omniture.com/en_US/documentation/sitecatalyst-reporting/r-getstatus
@@ -99,7 +99,7 @@ class AdobeDigitalMarketing_Api_Report extends AdobeDigitalMarketing_Api_SuiteAp
 
         return $this->returnResponse($response);
     }
-    
+
     /**
      * Cancels a previously submitted report request, and removes it from the processing queue.
      * https://developer.omniture.com/en_US/documentation/sitecatalyst-reporting/r-cancelreport
@@ -115,7 +115,7 @@ class AdobeDigitalMarketing_Api_Report extends AdobeDigitalMarketing_Api_SuiteAp
 
         return $this->returnResponse($response);
     }
-    
+
     /**
      * Returns a list of reports in the specified company's report queue.
      * https://developer.omniture.com/en_US/documentation/sitecatalyst-reporting/r-getreportqueue
@@ -129,34 +129,34 @@ class AdobeDigitalMarketing_Api_Report extends AdobeDigitalMarketing_Api_SuiteAp
 
         return $this->returnResponse($response);
     }
-    
+
     /**
-     * Returns an overtime report.Queues the report synchronously.  
+     * Returns an overtime report.Queues the report synchronously.
      * @see AdobeDigitalMarketing_Api_Report::queueAndGetReport()
-     */    
+     */
     public function getOvertimeReport($reportDescription)
     {
         return $this->queueAndGetReport($reportDescription, 'Overtime');
     }
 
     /**
-     * Returns a ranked report. Queues the report synchronously.  
+     * Returns a ranked report. Queues the report synchronously.
      * @see AdobeDigitalMarketing_Api_Report::queueAndGetReport()
-     */    
+     */
     public function getRankedReport($reportDescription)
     {
         return $this->queueAndGetReport($reportDescription, 'Ranked');
     }
 
     /**
-     * Returns a trended report. Queues the report synchronously.  
+     * Returns a trended report. Queues the report synchronously.
      * @see AdobeDigitalMarketing_Api_Report::queueAndGetReport()
-     */ 
+     */
     public function getTrendedReport($reportDescription)
     {
         return $this->queueAndGetReport($reportDescription, 'Trended');
     }
-    
+
     /**
      * Returns a report synchronously, calling getReport every two seconds until the report is ready
      */
@@ -164,9 +164,9 @@ class AdobeDigitalMarketing_Api_Report extends AdobeDigitalMarketing_Api_SuiteAp
     {
         $method = sprintf('queue%s', ucwords($type));
         $response = $this->$method($reportDescription);
-        
+
         $reportId = $response['reportID'];
-        
+
         $attempts = 0;
         do {
             $report = $this->getReport($reportId);
@@ -175,7 +175,7 @@ class AdobeDigitalMarketing_Api_Report extends AdobeDigitalMarketing_Api_SuiteAp
 
         return $report['report'];
     }
-    
+
     /**
     * Determines next sleep time for report queue checking.
     * Uses an incredibly complex backing off algorithm so that long requests don't have to check as often.
@@ -190,11 +190,11 @@ class AdobeDigitalMarketing_Api_Report extends AdobeDigitalMarketing_Api_SuiteAp
         if ($maxAttempts && $attempts >= $maxAttempts) {
             return false;
         }
-        
+
         // very complex.
         return $attempts * $attempts;
     }
-    
+
 
     protected function returnResponse($response, $key = null)
     {

@@ -10,10 +10,10 @@ class AdobeDigitalMarketing_Tests_Api_ReportTest extends AdobeDigitalMarketing_T
            'reportSuiteID' => $this->reportSuite,
            'metrics'       => array('pageviews'),
         ));
-        
+
         var_dump($response);
     }
-    
+
     public function testGetReport()
     {
         $api = $this->getClient()->getReportApi();
@@ -28,13 +28,13 @@ class AdobeDigitalMarketing_Tests_Api_ReportTest extends AdobeDigitalMarketing_T
                array('id' => 'evar1'),
             ),
         ));
-        
+
         if (isset($response['reportID'])) {
             $report = $api->getReport($response['reportID']);
             var_dump($report);
         }
     }
-    
+
     public function testGetRankedReport()
     {
         $api = $this->getClient()->getReportApi();
@@ -49,7 +49,7 @@ class AdobeDigitalMarketing_Tests_Api_ReportTest extends AdobeDigitalMarketing_T
                array('id' => 'evar1'),
             ),
         ));
-        
+
         $this->assertTrue(isset($response['data']));
     }
 
