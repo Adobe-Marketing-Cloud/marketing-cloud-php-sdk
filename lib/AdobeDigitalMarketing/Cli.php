@@ -36,7 +36,7 @@ class AdobeDigitalMarketing_Cli
         $options = $this->parser->parse($options);
 
         if (count($options) == 0 || $this->parser->help) {
-            $this->outputAndExit($parser->getUsage());
+            $this->outputAndExit($this->parser->getUsage());
         }
 
         if ($this->parser->version) {
@@ -69,29 +69,28 @@ class AdobeDigitalMarketing_Cli
 
     public function request($options)
     {
-        $defaultConf = $this->loadDefaultConfigFile();
         $token = null;
 
         // grab the default token
-        if (count($clientConf = $this->loadClientConfigFile()) > 0) {
-            foreach ($clientConf as $clientId => $config) {
-                if (isset($config['default'])) {
-                    $token = $config['default'];
+        if (count($config = $this->loadConfigFile()) > 0) {
+            foreach ($conf as $clientId => $clientConf) {
+                if (isset($clientConf['default'])) {
+                    $token = $clientConf['default'];
                     break;
                 }
-                if (isset($config['tokens'])) {
+                if (isset($clientConf['tokens'])) {
                     // grab the last token to use as a final default
-                    $token = array_pop($config['tokens']);
+                    $token = array_pop($clientConf['tokens']);
                 }
             }
         }
 
         if (!$token) {
-            $this->outputAndExit('Error: use "authenticate" method to store your credentials before making a request');
+            $this->outputAndExit('Error: use "authorize" method to store your credentials before making a request');
         }
 
         $auth = new AdobeDigitalMarketing_Auth_OAuth2();
-        $adm = new AdobeDigitalMarketing_Client(new AdobeDigitalMarketing_HttpClient_Curl($config + $defaultConf['default'], $auth));
+        $adm = new AdobeDigitalMarketing_Client(new AdobeDigitalMarketing_HttpClient_Curl($clientConf + $config['default'], $auth));
 
         $adm->authenticate($token);
 
@@ -147,15 +146,15 @@ class AdobeDigitalMarketing_Cli
 
         list($clientId, $clientSecret, $username, $password) = $options;
 
-        $defaultConf = $this->loadDefaultConfigFile();
-        $clientConf = $this->loadClientConfigFile();
-        $config = (isset($clientConf[$clientId]) ? (array) $clientConf[$clientId] : array()) + (array) $defaultConf['default'];
+        if (!$config = $this->loadConfigFile()) {
+            $this->outputAndExit('Invalid json in config/profile.json');
+        }
         $auth = new AdobeDigitalMarketing_Auth_HttpBasic();
-        $adm = new AdobeDigitalMarketing_Client(new AdobeDigitalMarketing_HttpClient_Curl($config, $auth));
+        $adm = new AdobeDigitalMarketing_Client(new AdobeDigitalMarketing_HttpClient_Curl($config['default'], $auth));
 
         $adm->authenticate($clientId, $clientSecret);
 
-        if (!$token = $adm->getOAuthApi()->getTokenFromUserCredentials($username, $password)) {
+        if (!$tokenData = $adm->getOAuthApi()->getTokenFromUserCredentials($username, $password)) {
             $response = $adm->getLastResponse();
             $error = null;
 
@@ -170,11 +169,12 @@ class AdobeDigitalMarketing_Cli
                 $error = $response['error']['message'];
             }
 
-            if ($error && $error = 'invalid_client') {
+            if ($error && $error == 'invalid_client') {
                 $this->outputAndExit('Error: Invalid client credentials');
             }
             $this->outputAndExit('Error: '.print_r($response, 1));
         }
+        $token = $tokenData['access_token'];
 
         if (isset($clientConf[$clientId]['tokens'])) {
             if (!in_array($token, $clientConf[$clientId]['tokens'])) {
@@ -194,16 +194,20 @@ class AdobeDigitalMarketing_Cli
 
         $this->writeClientConfigFile($clientConf);
 
-        $this->outputAndExit('Token: '.$token);
+        $this->outputAndExit('Token: '.$this->formatJson(json_encode($tokenData)));
     }
 
-    private function loadDefaultConfigFile($clientId = null)
+    private function getDefaultConfigFile()
     {
-        $defaultFile = dirname(__FILE__).'/../../config/default.json';
-        return json_decode(file_get_contents($defaultFile), 1);
+        // come up with a better default in the future - create a new endpoint?
+        $config = array(
+            'default' => array('endpoint' => 'api.omniture.com'),
+        );
+
+        return $config;
     }
 
-    private function loadClientConfigFile()
+    private function loadConfigFile()
     {
         $clientFile = dirname(__FILE__).'/../../config/profile.json';
         if (file_exists($clientFile)) {
@@ -212,7 +216,7 @@ class AdobeDigitalMarketing_Cli
         return array();
     }
 
-    private function writeClientConfigFile($config)
+    private function writeConfigFile($config)
     {
         $configFile = dirname(__FILE__).'/../../config/profile.json';
         file_put_contents($configFile, $this->formatJson(json_encode($config)));
