@@ -87,7 +87,7 @@ abstract class AdobeDigitalMarketing_Api implements AdobeDigitalMarketing_ApiInt
 
     protected function returnResponse($response, $key = null)
     {
-        if (!is_null($key) && !$this->getOption('raw')) {
+        if (!is_null($key) && isset($response[$key]) && !$this->getOption('raw')) {
             return $response[$key];
         }
 

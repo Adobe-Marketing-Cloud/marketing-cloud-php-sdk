@@ -35,6 +35,15 @@ Authenticate using your Adobe Digital Marketing Web Services username and secret
 
     $adm->authenticate($username, $secret);
 
+**Note**: If authentication fails, it's probably because your company endpoint is different from the default.  To verify, this, call the `getEndpoint()` method:
+
+    echo $adm->getCompanyApi()->getEndpoint('My Company Name');
+    // "https://api2.omniture.com"
+
+If the return value of this function is different from *https:api.omniture.com*, you will need to set the endpoint in your client
+
+    $adm->setEndpoint('https://api2.omniture.com');
+
 ### Deauthenticate a user
 
 Cancels authentication.

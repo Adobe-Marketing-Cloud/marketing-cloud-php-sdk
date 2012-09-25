@@ -272,4 +272,14 @@ class AdobeDigitalMarketing_Client
     {
         return $this->apis[$name];
     }
+
+    public function setEndpoint($endpoint)
+    {
+        $this->getHttpClient()->setOption('endpoint', $endpoint);
+    }
+
+    public function getEndpoint()
+    {
+        return $this->getHttpClient()->getOption('endpoint');
+    }
 }
