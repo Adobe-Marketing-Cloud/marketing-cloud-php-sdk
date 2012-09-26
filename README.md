@@ -132,6 +132,8 @@ Returns an array of results as described in [the documentation](https://develope
 
 ## Command Line Utility
 
+> OAuth is not yet available for production use.  This functionality is still under development.
+
 The easiest way to begin with OAuth is by using the command line utility tool (`bin/adm`).
 
 To get started, copy over the configuration file:
@@ -201,6 +203,6 @@ Now all subsequent requests will use this endpoint.  If you need to use an endpo
 
     $ ./bin/adm authorize CLIENT_ID CLIENT_SECRET USERNAME PASSWORD --endpoint 'api3.omniture.com'
 
-# To Do
+## To Do
 
 Better documentation and test coverage will be coming soon
