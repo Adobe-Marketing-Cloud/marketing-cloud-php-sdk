@@ -70,20 +70,20 @@ abstract class AdobeDigitalMarketing_Tests_ApiTest extends PHPUnit_Framework_Tes
 
     protected function initializeWsseFromGlobals()
     {
-        if (!isset($_SERVER['AdobeDigitalMarketing_Test_Username'])
-            || !isset($_SERVER['AdobeDigitalMarketing_Test_Secret'])
-            || !isset($_SERVER['AdobeDigitalMarketing_Test_ReportSuite'])) {
-            throw new AdobeDigitalMarketing_Auth_Exception("You must define a username/secret/reportsuite for testing in an environment variable (AdobeDigitalMarketing_Test_Username, AdobeDigitalMarketing_Test_Secret, AdobeDigitalMarketing_Test_ReportSuite)");
+        if (!isset($_SERVER['ADM_Username'])
+            || !isset($_SERVER['ADM_Secret'])
+            || !isset($_SERVER['ADM_ReportSuite'])) {
+            throw new AdobeDigitalMarketing_Auth_Exception("You must define a username/secret/reportsuite for testing in an environment variable (ADM_Username, ADM_Secret, ADM_ReportSuite)");
         }
 
         $options = array(
-            'username'    => $_SERVER['AdobeDigitalMarketing_Test_Username'],
-            'secret'      => $_SERVER['AdobeDigitalMarketing_Test_Secret'],
-            'reportSuite' => $_SERVER['AdobeDigitalMarketing_Test_ReportSuite'],
+            'username'    => $_SERVER['ADM_Username'],
+            'secret'      => $_SERVER['ADM_Secret'],
+            'reportSuite' => $_SERVER['ADM_ReportSuite'],
         );
 
-        if (isset($_SERVER['AdobeDigitalMarketing_Test_Endpoint'])) {
-            $options['endpoint'] = $_SERVER['AdobeDigitalMarketing_Test_Endpoint'];
+        if (isset($_SERVER['ADM_Endpoint'])) {
+            $options['endpoint'] = $_SERVER['ADM_Endpoint'];
         }
 
         $this->initialize($options);
@@ -93,22 +93,22 @@ abstract class AdobeDigitalMarketing_Tests_ApiTest extends PHPUnit_Framework_Tes
 
     protected function initializeOAuthFromGlobals()
     {
-        if (!isset($_SERVER['AdobeDigitalMarketing_Test_Username'])
-            || !isset($_SERVER['AdobeDigitalMarketing_Test_Password'])
-            || !isset($_SERVER['AdobeDigitalMarketing_Test_ClientId'])
-            || !isset($_SERVER['AdobeDigitalMarketing_Test_ClientSecret'])) {
-            throw new AdobeDigitalMarketing_Auth_Exception("You must define a client_id/client_secret/username/secret/reportsuite for testing in an environment variable (AdobeDigitalMarketing_Test_ClientId, AdobeDigitalMarketing_Test_ClientSecret, AdobeDigitalMarketing_Test_Username, AdobeDigitalMarketing_Test_Password)");
+        if (!isset($_SERVER['ADM_Username'])
+            || !isset($_SERVER['ADM_Password'])
+            || !isset($_SERVER['ADM_ClientId'])
+            || !isset($_SERVER['ADM_ClientSecret'])) {
+            throw new AdobeDigitalMarketing_Auth_Exception("You must define a client_id/client_secret/username/secret/reportsuite for testing in an environment variable (ADM_ClientId, ADM_ClientSecret, ADM_Username, ADM_Password)");
         }
 
         $options = array(
-           'client_id' => $_SERVER['AdobeDigitalMarketing_Test_ClientId'],
-           'client_secret' => $_SERVER['AdobeDigitalMarketing_Test_ClientSecret'],
-           'username' => $_SERVER['AdobeDigitalMarketing_Test_Username'],
-           'password' => $_SERVER['AdobeDigitalMarketing_Test_Password'],
+           'client_id' => $_SERVER['ADM_ClientId'],
+           'client_secret' => $_SERVER['ADM_ClientSecret'],
+           'username' => $_SERVER['ADM_Username'],
+           'password' => $_SERVER['ADM_Password'],
         );
 
-        if (isset($_SERVER['AdobeDigitalMarketing_Test_Endpoint'])) {
-            $options['endpoint'] = $_SERVER['AdobeDigitalMarketing_Test_Endpoint'];
+        if (isset($_SERVER['ADM_Endpoint'])) {
+            $options['endpoint'] = $_SERVER['ADM_Endpoint'];
         }
 
         $this->initialize($options);

@@ -23,10 +23,11 @@ class AdobeDigitalMarketing_Tests_ClientTest extends PHPUnit_Framework_TestCase
         $secret   = 'secret';
 
         $httpClient = $this->getHttpClientMock();
-        $httpClient->expects($this->exactly(2))
-            ->method('setOption')
-            ->will($this->returnValue($httpClient));
-
+        $authMock   = $this->getAuthServiceMock();
+        $httpClient->expects($this->once())
+            ->method('getAuthService')
+            ->with()
+            ->will($this->returnValue($authMock));
         $client = $this->getClientMockBuilder()
             ->setMethods(array('getHttpClient'))
             ->getMock();
@@ -79,10 +80,10 @@ class AdobeDigitalMarketing_Tests_ClientTest extends PHPUnit_Framework_TestCase
         $options    = array('c' => 'd');
 
         $httpClient = $this->getHttpClientMock();
+
         $httpClient->expects($this->once())
             ->method('post')
             ->with($path, $parameters, $options);
-
         $client = $this->getClientMockBuilder()
             ->setMethods(array('getHttpClient'))
             ->getMock();
@@ -121,7 +122,16 @@ class AdobeDigitalMarketing_Tests_ClientTest extends PHPUnit_Framework_TestCase
 
     protected function getHttpClientMock()
     {
-        return $this->getMockBuilder('AdobeDigitalMarketing_HttpClientInterface')
+        $httpMock = $this->getMockBuilder('AdobeDigitalMarketing_HttpClientInterface')
             ->getMock();
+
+        return $httpMock;
+    }
+
+    protected function getAuthServiceMock()
+    {
+        $authMock = $this->getMockBuilder('AdobeDigitalMarketing_Auth_Wsse')
+            ->getMock();
+        return $authMock;
     }
 }

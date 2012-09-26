@@ -57,6 +57,7 @@ class AdobeDigitalMarketing_Client
         $auth = $this->getHttpClient()->getAuthService();
 
         $args = func_get_args(); // php 5.2 requires this be on a separate line
+
         call_user_func_array(array($auth, 'authenticate'), $args);
 
         return $this;
