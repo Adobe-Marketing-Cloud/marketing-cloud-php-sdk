@@ -146,7 +146,7 @@ class AdobeDigitalMarketing_Cli
 
         list($clientId, $clientSecret, $username, $password) = $options;
 
-        if (!$config = $this->loadConfigFile()) {
+        if (false === ($config = $this->loadConfigFile())) {
             $this->outputAndExit('Invalid json in config/profile.json');
         }
         $auth = new AdobeDigitalMarketing_Auth_HttpBasic();
@@ -176,23 +176,23 @@ class AdobeDigitalMarketing_Cli
         }
         $token = $tokenData['access_token'];
 
-        if (isset($clientConf[$clientId]['tokens'])) {
-            if (!in_array($token, $clientConf[$clientId]['tokens'])) {
-                $clientConf[$clientId]['tokens'][] = $token;
+        if (isset($config[$clientId]['tokens'])) {
+            if (!in_array($token, $config[$clientId]['tokens'])) {
+                $config[$clientId]['tokens'][] = $token;
             }
         } else {
-            $clientConf[$clientId] = array('tokens' => array($token));
+            $config[$clientId] = array('tokens' => array($token));
         }
 
         // clear the default
-        foreach ($clientConf as $id => $conf) {
-            unset($clientConf[$id]['default']);
+        foreach ($config as $id => $conf) {
+            unset($config[$id]['default']);
         }
 
         // set the new token as default
-        $clientConf[$clientId]['default'] = $token;
+        $config[$clientId]['default'] = $token;
 
-        $this->writeClientConfigFile($clientConf);
+        $this->writeConfigFile($config);
 
         $this->outputAndExit('Token: '.$this->formatJson(json_encode($tokenData)));
     }
@@ -213,7 +213,7 @@ class AdobeDigitalMarketing_Cli
         if (file_exists($clientFile)) {
             return json_decode(file_get_contents($clientFile), 1);
         }
-        return array();
+        $this->outputAndExit('Error: Please copy "config/profile.json.dist" to "config/profile.json"');
     }
 
     private function writeConfigFile($config)
