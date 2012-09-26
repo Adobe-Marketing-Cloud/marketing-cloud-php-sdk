@@ -74,6 +74,10 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
             CURLOPT_SSL_VERIFYPEER  => !isset($this->options['verifyssl']) || $this->options['verifyssl'],
         );
 
+        if (isset($this->options['curlopts']) && is_array($this->options['curlopts'])) {
+            $curlOptions += $this->options['curlopts'];
+        }
+
         if ($options['proxy']) {
             $curlOptions[CURLOPT_PROXY] = $options['proxy'];
         }
@@ -97,6 +101,21 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
           $b64nonce,
           $created
         );
+    }
+
+    /**
+     * Get a JSON response and transform it to a PHP array
+     *
+     * @return  array   the response
+     */
+    protected function decodeResponse($response)
+    {
+        // "false" means a failed curl request
+        if (false === $response['response']) {
+            $this->debug(print_r($response, true));
+            return false;
+        }
+        return parent::decodeResponse($response);
     }
 
     protected function doCurlCall(array $curlOptions)
