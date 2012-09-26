@@ -1,4 +1,4 @@
-.travis.ymllanguage: php
+language: php
 
 php:
   - 5.2
