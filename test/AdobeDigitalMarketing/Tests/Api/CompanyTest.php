@@ -8,6 +8,9 @@ class AdobeDigitalMarketing_Tests_Api_CompanyTest extends AdobeDigitalMarketing_
 
         $response = $client->getCompanyApi()->getEndpoint('Adobe');
 
+        if (!is_string($response)) {
+            print_r($client->getLastResponse()); // for debugging
+        }
         $this->assertTrue(is_string($response));
     }
 
