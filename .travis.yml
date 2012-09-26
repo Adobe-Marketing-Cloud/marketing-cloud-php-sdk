@@ -1,11 +1,9 @@
 .travis.ymllanguage: php
 
 php:
-  - 5.2.4
+  - 5.2
   - 5.3
   - 5.4
-
-script: phpunit
 
 env:
  - ADM_USERNAME="test:Shaffer Corp SBX" ADM_SECRET=4403235623ba9d64b0d8d5b3315fdc7c ADM_REPORTSUITE=shaffertest ADM_ENDPOINT=api-sbx1.omniture.com
