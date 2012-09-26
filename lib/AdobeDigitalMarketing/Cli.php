@@ -9,7 +9,7 @@ class AdobeDigitalMarketing_Cli
     const VERSION_MINOR = 1;
     const VERSION_PATCH = 0;
 
-    private $supported_commands = array('authorize', 'request');
+    private $supported_commands = array('authorize', 'request', 'profile');
     private $parser;
 
     public function __construct()
@@ -17,10 +17,11 @@ class AdobeDigitalMarketing_Cli
         $this->parser = new AdobeDigitalMarketing_OptionParser();
         $this->parser->addHead("\nCalls the Adobe Digital Marketing Suite APIs");
         $this->parser->addHead("\nTo get started, call \n");
-        $this->parser->addHead("\n\t$ adm authorize\"\n");
+        $this->parser->addHead("\n\t$ adm authorize\n");
         $this->parser->addHead("\nto retrieve a token.  Some other options avialable are\n");
         $this->parser->addRule('h|help', "Display a help message and exit");
         $this->parser->addRule('v|version', "Display the current api version\n");
+        $this->parser->addRule('e|endpoint::', "Specify the api endpoint\n");
         $this->parser->addTail("\nSee developer.omniture.com for more information\n");
     }
 
@@ -44,6 +45,7 @@ class AdobeDigitalMarketing_Cli
         }
 
         if (!in_array($command = $options[0], $this->supported_commands)) {
+            // default to "request" command - do we want to do this?
             array_unshift($options, 'request');
         }
 
@@ -59,7 +61,7 @@ class AdobeDigitalMarketing_Cli
                 $this->request($options);
                 break;
             case 'profile':
-                $this->request($options);
+                $this->profile($options);
                 break;
             case 'authorize':
                 $this->authorize($options);
@@ -69,34 +71,38 @@ class AdobeDigitalMarketing_Cli
 
     public function request($options)
     {
+        if (count($options) < 1) {
+            $this->outputAndExit('Error: you must supply the method you want to call (ex: adm request Company.GetReportSuites)');
+        }
+
         $token = null;
 
         // grab the default token
-        if (count($config = $this->loadConfigFile()) > 0) {
-            foreach ($conf as $clientId => $clientConf) {
-                if (isset($clientConf['default'])) {
-                    $token = $clientConf['default'];
-                    break;
-                }
-                if (isset($clientConf['tokens'])) {
-                    // grab the last token to use as a final default
-                    $token = array_pop($clientConf['tokens']);
-                }
+        $config = $this->loadConfigFile();
+        $endpoint = $this->parser->endpoint ? $this->parser->endpoint : $config['default']['endpoint'];
+
+        foreach ($config as $clientId => $clientConf) {
+            if (isset($clientConf[$endpoint]['default'])) {
+                $token = $clientConf[$endpoint]['default'];
+                break;
+            }
+            if (isset($clientConf[$endpoint]['tokens'])) {
+                // grab the last token to use as a final default
+                $token = array_pop($clientConf[$endpoint]['tokens']);
             }
         }
 
         if (!$token) {
-            $this->outputAndExit('Error: use "authorize" method to store your credentials before making a request');
+            if (!$options[0] == 'Company.GetEndpoint') {
+                $this->outputAndExit('Error: No tokens found for this endpoint.  Use "authorize" method to store your credentials before making a request');
+            }
         }
+        $curlConf = isset($clientConf[$endpoint]) ? $clientConf[$endpoint] : array();
 
         $auth = new AdobeDigitalMarketing_Auth_OAuth2();
-        $adm = new AdobeDigitalMarketing_Client(new AdobeDigitalMarketing_HttpClient_Curl($clientConf + $config['default'], $auth));
+        $adm = new AdobeDigitalMarketing_Client(new AdobeDigitalMarketing_HttpClient_Curl(array('endpoint' => $endpoint) + $curlConf + $config['default'], $auth));
 
         $adm->authenticate($token);
-
-        if (count($options) < 1) {
-         $this->outputAndExit('Error: you must supply the method you want to call as the first argument to "request"');
-        }
 
         $parameters = array();
         if (isset($options[1])) {
@@ -149,8 +155,10 @@ class AdobeDigitalMarketing_Cli
         if (false === ($config = $this->loadConfigFile())) {
             $this->outputAndExit('Invalid json in config/profile.json');
         }
+        $endpoint = $this->parser->endpoint ? $this->parser->endpoint : $config['default']['endpoint'];
+
         $auth = new AdobeDigitalMarketing_Auth_HttpBasic();
-        $adm = new AdobeDigitalMarketing_Client(new AdobeDigitalMarketing_HttpClient_Curl($config['default'], $auth));
+        $adm = new AdobeDigitalMarketing_Client(new AdobeDigitalMarketing_HttpClient_Curl(array('endpoint' => $endpoint) + $config['default'], $auth));
 
         $adm->authenticate($clientId, $clientSecret);
 
@@ -176,25 +184,56 @@ class AdobeDigitalMarketing_Cli
         }
         $token = $tokenData['access_token'];
 
-        if (isset($config[$clientId]['tokens'])) {
-            if (!in_array($token, $config[$clientId]['tokens'])) {
-                $config[$clientId]['tokens'][] = $token;
-            }
-        } else {
-            $config[$clientId] = array('tokens' => array($token));
+        // set defaults if config is new
+        if (!isset($config[$clientId])) {
+            $config[$clientId] = array();
+        }
+        if (!isset($config[$clientId][$endpoint])) {
+            $config[$clientId][$endpoint] = array('tokens' => array(), 'default' => '');
         }
 
-        // clear the default
+        // check if token exists
+        if (!in_array($token, $config[$clientId][$endpoint]['tokens'])) {
+            $config[$clientId][$endpoint]['tokens'][] = $token;
+        }
+
+        // clear the defaults across all clients for this endpoint
         foreach ($config as $id => $conf) {
-            unset($config[$id]['default']);
+            unset($config[$id][$endpoint]['default']);
         }
 
         // set the new token as default
-        $config[$clientId]['default'] = $token;
+        $config[$clientId][$endpoint]['default'] = $token;
 
         $this->writeConfigFile($config);
 
         $this->outputAndExit('Token: '.$this->formatJson(json_encode($tokenData)));
+    }
+
+    public function profile($options)
+    {
+        $config = $this->loadConfigFile();
+        $profile = 'default';
+
+        // show all profile options
+        if (count($options) == 0) {
+            $this->outputAndExit(sprintf("%s values:\n%s", $profile, $this->formatJson(json_encode($config['default']))));
+        }
+        // get method
+        if (count($options) == 1) {
+            if (isset($config[$profile][$options[0]])) {
+                $this->outputAndExit(sprintf('%s value for "%s": %s', $profile, $options[0], $config[$profile][$options[0]]));
+            }
+            $this->outputAndExit(sprintf('%s value for "%s" is not set', $profile, $options[0]));
+        }
+        // set method
+        if (count($options) > 3) {
+            $this->outputAndExit('Error: too many arguments to "profile" command');
+        }
+
+        $config[$profile][$options[0]] = $options[1];
+        $this->writeConfigFile($config);
+        $this->outputAndExit(sprintf('%s value for "%s" set to %s', $profile, $options[0], $options[1]));
     }
 
     private function getDefaultConfigFile()

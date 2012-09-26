@@ -130,6 +130,77 @@ The above code will render the Report array, which will look something like this
 
 Returns an array of results as described in [the documentation](https://developer.omniture.com/en_US/documentation/sitecatalyst-reporting/r-reportqueueresponse)
 
+## Command Line Utility
+
+The easiest way to begin with OAuth is by using the command line utility tool (`bin/adm`).
+
+To get started, copy over the configuration file:
+
+    $ cp config/profile.json.dist config/profile.json
+
+Once this is done, run the `adm` command to get started
+
+    $ ./bin/adm
+
+    Calls the Adobe Digital Marketing Suite APIs
+    To get started, call
+
+        $ adm authorize
+
+    to retrieve a token.  Some other options avialable are
+
+     -h, --help      Display a help message and exit
+     -v, --version   Display the current api version
+
+     -e, --endpoint  Specify the api endpoint
+
+
+    See developer.omniture.com for more information
+
+The first step will be to get an oauth token.  This can be accomplished by providing the `authorize` command with a client id, client secret, username and password.  Client IDs can be created in the [Developer Connection](https://developer.omniture.com/en_US/devcenter/applications).  Once you've done this, run the `authorize` command to receive a token:
+
+    $ adm authorize CLIENT_ID CLIENT_SECRET USERNAME PASSWORD
+    Token: {
+      "access_token":"f9f071ca2c25d23eff01a1ea238d6f85666be0f6",
+      "expires_in":2592000,
+      "token_type":"bearer",
+      "scope":null,
+      "success":true
+    }
+
+You've now received your first access token.  This has been saved to `config/profile.json`, so you don't need to worry about it.  You can go ahead and start making requests!
+
+   $ adm request Company.GetReportSuites
+   Array
+   (
+       [report_suites] => Array
+           (
+               [0] => Array
+                   (
+                       [rsid] => your.rsid
+                       [site_title] => Your Site
+                   )
+               ...
+           )
+   )
+
+
+### Endpoints
+
+The default endpoint is **api.omniture.com**.  If you are experiencing issues, call the `Company.GetEndpoint` method to find out which endpoint you should be using:
+
+    $ ./bin/adm Company.GetEndpoint 'company=My Company'
+    https://api2.omniture.com/admin/1.3/rest/
+
+In this case, the endpoint is *api2.omniture.com*.  To use this endpoint instead, set the endpoint in your profile:
+
+    $ ./bin/adm profile endpoint api2.omniture.com
+    default value for "endpoint" set to api2.omniture.com
+
+Now all subsequent requests will use this endpoint.  If you need to use an endpoint other than the default, you can pass this in with the `-e` or `--endpoint` options
+
+    $ ./bin/adm authorize CLIENT_ID CLIENT_SECRET USERNAME PASSWORD --endpoint 'api3.omniture.com'
+
 # To Do
 
 Better documentation and test coverage will be coming soon
