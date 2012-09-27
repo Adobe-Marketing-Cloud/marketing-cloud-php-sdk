@@ -153,7 +153,6 @@ Once this is done, run the `adm` command to get started
 
      -h, --help      Display a help message and exit
      -v, --version   Display the current api version
-
      -e, --endpoint  Specify the api endpoint
 
 
@@ -172,9 +171,9 @@ The first step will be to get an oauth token.  This can be accomplished by provi
 
 You've now received your first access token.  This has been saved to `config/profile.json`, so you don't need to worry about it.  You can go ahead and start making requests!
 
-   $ adm request Company.GetReportSuites
-   Array
-   (
+    $ adm request Company.GetReportSuites
+    Array
+    (
        [report_suites] => Array
            (
                [0] => Array
@@ -184,7 +183,7 @@ You've now received your first access token.  This has been saved to `config/pro
                    )
                ...
            )
-   )
+    )
 
 
 ### Endpoints

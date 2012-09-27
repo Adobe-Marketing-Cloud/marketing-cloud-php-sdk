@@ -15,13 +15,13 @@ class AdobeDigitalMarketing_Cli
     public function __construct()
     {
         $this->parser = new AdobeDigitalMarketing_OptionParser();
-        $this->parser->addHead("\nCalls the Adobe Digital Marketing Suite APIs");
-        $this->parser->addHead("\nTo get started, call \n");
+        $this->parser->addHead("\nCalls the Adobe Digital Marketing Suite APIs using OAuth 2.0.");
+        $this->parser->addHead("\nTo get started, call: \n");
         $this->parser->addHead("\n\t$ adm authorize\n");
         $this->parser->addHead("\nto retrieve a token.  Some other options avialable are\n");
         $this->parser->addRule('h|help', "Display a help message and exit");
-        $this->parser->addRule('v|version', "Display the current api version\n");
-        $this->parser->addRule('e|endpoint::', "Specify the api endpoint\n");
+        $this->parser->addRule('v|version', "Display the current api version");
+        $this->parser->addRule('e|endpoint::', "Specify the api endpoint");
         $this->parser->addTail("\nSee developer.omniture.com for more information\n");
     }
 
@@ -93,7 +93,7 @@ class AdobeDigitalMarketing_Cli
         }
 
         if (!$token) {
-            if (!$options[0] == 'Company.GetEndpoint') {
+            if ($options[0] != 'Company.GetEndpoint') {
                 $this->outputAndExit('Error: No tokens found for this endpoint.  Use "authorize" method to store your credentials before making a request');
             }
         }
