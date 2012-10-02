@@ -145,13 +145,23 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
      * @param string $name   The option name
      * @param mixed  $value  The value
      *
-     * @return dmConfigurable The current object instance
+     * @return The current object instance
      */
     public function setOption($name, $value)
     {
         $this->options[$name] = $value;
 
         return $this;
+    }
+
+    /**
+     * Return the options array.
+     *
+     * @return array The httpclient options
+     */
+    public function getOptions()
+    {
+        return $this->options;
     }
 
     /**
