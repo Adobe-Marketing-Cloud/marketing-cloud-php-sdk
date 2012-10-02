@@ -155,7 +155,6 @@ Once this is done, run the `adm` command to get started
      -v, --version   Display the current api version
      -e, --endpoint  Specify the api endpoint
 
-
     See developer.omniture.com for more information
 
 The first step will be to get an oauth token.  This can be accomplished by providing the `authorize` command with a client id, client secret, username and password.  Client IDs can be created in the [Developer Connection](https://developer.omniture.com/en_US/devcenter/applications).  Once you've done this, run the `authorize` command to receive a token:
