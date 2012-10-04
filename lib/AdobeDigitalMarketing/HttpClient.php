@@ -213,7 +213,7 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
                 throw new LogicException("format 'jsonp' not yet supported by this library");
 
             case 'xml':
-                throw new LogicException("format 'xml' not yet supported by this library");
+                return json_decode(json_encode(simplexml_load_string($response['response'])), true);
 
             case 'xspf':
                 throw new LogicException("format 'xspf' not yet supported by this library");
