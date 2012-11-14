@@ -1,10 +1,10 @@
 # Adobe Digital Marketing PHP SDK
-[![Build Status](https://secure.travis-ci.org/Adobe-Digital-Marketing/adobe-digital-marketing-php-sdk.png)](http://travis-ci.org/Adobe-Digital-Marketing/adobe-digital-marketing-php-sdk)
+[![Build Status](https://secure.travis-ci.org/Adobe-Digital-Marketing/marketing-cloud-php-sdk.png)](http://travis-ci.org/Adobe-Digital-Marketing/marketing-cloud-php-sdk)
 
-A simple, Object Oriented wrapper for the Adobe Digital Marketing Suite APIs written in PHP5.
+A simple, Object Oriented wrapper for the Adobe Marketing Cloud APIs written in PHP5.
 This library is modeled after the [php-github-api](https://github.com/ornicar/php-github-api) library built by [ornicar](https://github.com/ornicar)
 
-Uses the [Adobe Digital Marketing Suite APIs](http://developer.omniture.com/en_US/documentation). Default version is 1.3, but 1.2 is compatible.
+Uses the [Adobe Marketing Cloud APIs](http://developer.omniture.com/en_US/documentation). Default version is 1.3, but 1.2 is compatible.
 
 Requires
 
@@ -32,7 +32,7 @@ From this object you can now access all of the different AdobeDigitalMarketing A
 
 ### Authenticate a user
 
-Authenticate using your Adobe Digital Marketing Web Services username and secret.  You can obtain one by logging into the [Digital Marketing Suite](https://my.omniture.com) and browsing to **Admin** > **Company** > **Web Services**
+Authenticate using your Adobe Digital Marketing Web Services username and secret.  You can obtain one by logging into the [Marketing Cloud](https://my.omniture.com) and browsing to **Admin** > **Company** > **Web Services**
 
     $adm->authenticate($username, $secret);
 
@@ -144,7 +144,7 @@ Once this is done, run the `adm` command to get started
 
     $ ./bin/adm
 
-    Calls the Adobe Digital Marketing Suite APIs
+    Calls the Adobe Marketing Cloud APIs
     To get started, call
 
         $ adm authorize

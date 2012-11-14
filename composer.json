@@ -1,0 +1,21 @@
+{
+    "name": "Adobe-Marketing-Cloud/marketing-cloud-php-sdk",
+    "description":"An Object Oriented wrapper for the Adobe Marketing Cloud APIs",
+    "keywords":["adobe","omniture","marketing","cloud","marketing cloud", "digital","suite", "digital marketing suite"],
+    "type":"library",
+    "license":"MIT",
+    "authors":[
+        {
+            "name":"Brent Shaffer",
+            "email": "bshafs@gmail.com",
+            "homepage":"http://github.com/bshaffer"
+        }
+    ],
+    "homepage": "http://github.com/Adobe-Marketing-Cloud/marketing-cloud-php-sdk",
+    "require":{
+        "php":">=5.2.4"
+    },
+    "autoload": {
+        "psr-0": { "AdobeDigitalMarketing": "lib/" }
+    }
+}
