@@ -61,6 +61,15 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
             $headers[] = 'Content-Length: 0';
         }
 
+        switch ($this->options['format']) {
+            case 'json':
+                $headers[] = 'Accept: application/json';
+                break;
+            case 'xml':
+                $headers[] = 'Accept: text/xml';
+                break;
+        }
+
         $this->debug('send '.$httpMethod.' request: '.$url);
 
         $curlOptions += array(
