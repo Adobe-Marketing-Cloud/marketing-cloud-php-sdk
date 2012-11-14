@@ -1,5 +1,5 @@
-# Adobe Digital Marketing PHP SDK
-[![Build Status](https://secure.travis-ci.org/Adobe-Digital-Marketing/marketing-cloud-php-sdk.png)](http://travis-ci.org/Adobe-Digital-Marketing/marketing-cloud-php-sdk)
+# Adobe Marketing Cloud PHP SDK
+[![Build Status](https://secure.travis-ci.org/Adobe-Marketing-Cloud/marketing-cloud-php-sdk.png)](http://travis-ci.org/Adobe-Marketing-Cloud/marketing-cloud-php-sdk)
 
 A simple, Object Oriented wrapper for the Adobe Marketing Cloud APIs written in PHP5.
 This library is modeled after the [php-github-api](https://github.com/ornicar/php-github-api) library built by [ornicar](https://github.com/ornicar)
