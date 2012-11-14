@@ -1,5 +1,5 @@
 {
-    "name": "Adobe-Marketing-Cloud/marketing-cloud-php-sdk",
+    "name": "adobe-marketing-cloud/marketing-cloud-php-sdk",
     "description":"An Object Oriented wrapper for the Adobe Marketing Cloud APIs",
     "keywords":["adobe","omniture","marketing","cloud","marketing cloud", "digital","suite", "digital marketing suite"],
     "type":"library",
