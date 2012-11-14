@@ -137,7 +137,7 @@ class AdobeDigitalMarketing_Cli
         if (is_string($response)) {
             echo "$response\n";
         } elseif (is_array($response)) {
-            print_r($response);
+            echo $this->formatJson(json_encode($response));
         } else {
             print_r($adm->getLastResponse());
         }
