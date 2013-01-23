@@ -11,7 +11,7 @@ class AdobeDigitalMarketing_Api_OAuth extends AdobeDigitalMarketing_Api
 {
     public function getTokenFromUserCredentials($username, $password)
     {
-        $response = $this->get('authorize', array(
+        $response = $this->post('authorize', array(
                 'grant_type'    => 'password',
                 'username'      => $username,
                 'password'      => $password
