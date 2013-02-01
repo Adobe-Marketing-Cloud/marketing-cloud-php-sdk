@@ -52,10 +52,21 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
             }
             else
             {
+                switch ($this->options['content-type']) {
+                    case 'form':
+                        $headers[] = 'Content-Type: application/x-www-form-urlencoded';
+                        $parameters = http_build_query($parameters);
+                        break;
+                    case 'json':
+                    default:
+                        $headers[] = 'Content-Type: application/json';
+                        $parameters = json_encode($parameters);
+                        break;
+                }
+
                 $curlOptions += array(
-                    CURLOPT_POSTFIELDS  => json_encode($parameters)
+                    CURLOPT_POSTFIELDS  => $parameters,
                 );
-                $headers[] = 'Content-Type: application/json';
             }
         } else {
             $headers[] = 'Content-Length: 0';

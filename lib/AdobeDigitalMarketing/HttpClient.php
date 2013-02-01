@@ -26,6 +26,7 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
         'limit'       => false,
         'debug'       => false,
         'proxy'       => null,
+        'content-type' => 'json',
     );
 
     protected $auth;
