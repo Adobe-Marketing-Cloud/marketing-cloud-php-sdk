@@ -143,71 +143,137 @@ class AdobeDigitalMarketing_Cli
         }
     }
 
-    private function authorize($options)
+    private function getEndpoint()
     {
-        // We will support three legged oauth soon
-        if (count($options) < 4) {
-            $this->outputAndExit("Usage: authorize [clientId] [clientSecret] [username] [password]");
-        }
-
-        list($clientId, $clientSecret, $username, $password) = $options;
-
         if (false === ($config = $this->loadConfigFile())) {
             $this->outputAndExit('Invalid json in config/profile.json');
         }
-        $endpoint = $this->parser->endpoint ? $this->parser->endpoint : $config['default']['endpoint'];
+        return $this->parser->endpoint ? $this->parser->endpoint : $config['default']['endpoint'];
+    }
 
-        $auth = new AdobeDigitalMarketing_Auth_HttpBasic();
-        $adm = new AdobeDigitalMarketing_Client(new AdobeDigitalMarketing_HttpClient_Curl(array('endpoint' => $endpoint) + $config['default'], $auth));
+    private function authorize($options)
+    {
+        // We will support three legged oauth soon
+        if (count($options) < 1) {
+            $usage = <<<EOF
+Usage: authorize <grant_type> <client_id> [....]
 
-        $adm->authenticate($clientId, $clientSecret);
+    grant_type - (required) A compatible grant type, one of: ["password", "code"]
 
-        if (!$tokenData = $adm->getOAuthApi()->getTokenFromUserCredentials($username, $password)) {
-            $response = $adm->getLastResponse();
-            $error = null;
+Providing a username/password will return a token immediately.  Excluding these will
+provide a URL to retrieve the authorization code. Clients can be registered at
+https://developer.omniture.com/en_US/devcenter/applications
 
-            if (($json = json_decode($response['response'], true)) != false) {
-                $response = $json;
+EOF;
+            $this->outputAndExit($usage);
+        }
+
+        $grant_type = array_shift($options);
+
+        if ($grant_type == 'code') {
+            if (count($options) < 1) {
+                $usage = <<<EOF
+Usage: authorize code <client_id> [<client_secret> <username> <password>]
+
+    client_id - (required) The ID of your registered client
+
+The "code" grant returns a URL to retrieve the authorization code.
+Clients can be registered at
+https://developer.omniture.com/en_US/devcenter/applications
+
+EOF;
+                $this->outputAndExit($usage);
             }
 
-            if (isset($response['errorMessage']) && !empty($response['errorMessage'])) {
-                $error =$response['errorMessage'];
+            $clientId = array_shift($options);
+            $endpoint = $this->getEndpoint();
+            $instructions = <<<EOF
+Paste the following URL in your browser, and then copy the authorization
+code returned by the server:
+
+    https://%s/authorize?client_id=%s
+
+
+EOF;
+
+            echo sprintf($instructions, $endpoint, urlencode($clientId));
+            // provide prompt for authorization code here
+
+        } else if ($grant_type == 'password') {
+            if (count($options) < 4) {
+                $usage = <<<EOF
+Usage: authorize password <client_id> <client_secret> <username> <password>
+
+    client_id     - (required) The ID of your registered client
+    client_secret - (required) The secret of your registered client
+    username      - (required) username of the user to authorize
+    password      - (required) password to authorize
+
+The "password" grant provides a token immediately.
+Clients can be registered at
+https://developer.omniture.com/en_US/devcenter/applications
+
+EOF;
+                $this->outputAndExit($usage);
             }
-            if (isset($response['error']['message'])) {
-                $error = $response['error']['message'];
+            list($clientId, $clientSecret, $username, $password) = $options;
+
+            $endpoint = $this->getEndpoint();
+
+            $auth = new AdobeDigitalMarketing_Auth_HttpBasic();
+            $adm = new AdobeDigitalMarketing_Client(new AdobeDigitalMarketing_HttpClient_Curl(array('endpoint' => $endpoint) + $config['default'], $auth));
+
+            $adm->authenticate($clientId, $clientSecret);
+
+            if (!$tokenData = $adm->getOAuthApi()->getTokenFromUserCredentials($username, $password)) {
+                $response = $adm->getLastResponse();
+                $error = null;
+
+                if (($json = json_decode($response['response'], true)) != false) {
+                    $response = $json;
+                }
+
+                if (isset($response['errorMessage']) && !empty($response['errorMessage'])) {
+                    $error =$response['errorMessage'];
+                }
+                if (isset($response['error']['message'])) {
+                    $error = $response['error']['message'];
+                }
+
+                if ($error && $error == 'invalid_client') {
+                    $this->outputAndExit('Error: Invalid client credentials');
+                }
+                $this->outputAndExit('Error: '.print_r($response, 1));
+            }
+            $token = $tokenData['access_token'];
+
+            // set defaults if config is new
+            if (!isset($config[$clientId])) {
+                $config[$clientId] = array();
+            }
+            if (!isset($config[$clientId][$endpoint])) {
+                $config[$clientId][$endpoint] = array('tokens' => array(), 'default' => '');
             }
 
-            if ($error && $error == 'invalid_client') {
-                $this->outputAndExit('Error: Invalid client credentials');
+            // check if token exists
+            if (!in_array($token, $config[$clientId][$endpoint]['tokens'])) {
+                $config[$clientId][$endpoint]['tokens'][] = $token;
             }
-            $this->outputAndExit('Error: '.print_r($response, 1));
+
+            // clear the defaults across all clients for this endpoint
+            foreach ($config as $id => $conf) {
+                unset($config[$id][$endpoint]['default']);
+            }
+
+            // set the new token as default
+            $config[$clientId][$endpoint]['default'] = $token;
+
+            $this->writeConfigFile($config);
+
+            $this->outputAndExit('Token: '.$this->formatJson(json_encode($tokenData)));
+        } else {
+            $this->outputAndExit("Unrecognized grant type \"$grant_type\", must be one of [code, password]");
         }
-        $token = $tokenData['access_token'];
-
-        // set defaults if config is new
-        if (!isset($config[$clientId])) {
-            $config[$clientId] = array();
-        }
-        if (!isset($config[$clientId][$endpoint])) {
-            $config[$clientId][$endpoint] = array('tokens' => array(), 'default' => '');
-        }
-
-        // check if token exists
-        if (!in_array($token, $config[$clientId][$endpoint]['tokens'])) {
-            $config[$clientId][$endpoint]['tokens'][] = $token;
-        }
-
-        // clear the defaults across all clients for this endpoint
-        foreach ($config as $id => $conf) {
-            unset($config[$id][$endpoint]['default']);
-        }
-
-        // set the new token as default
-        $config[$clientId][$endpoint]['default'] = $token;
-
-        $this->writeConfigFile($config);
-
-        $this->outputAndExit('Token: '.$this->formatJson(json_encode($tokenData)));
     }
 
     public function profile($options)
