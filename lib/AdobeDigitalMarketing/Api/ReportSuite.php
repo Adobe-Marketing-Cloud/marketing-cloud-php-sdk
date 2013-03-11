@@ -21,8 +21,9 @@ class AdobeDigitalMarketing_Api_ReportSuite extends AdobeDigitalMarketing_Api_Su
         if ($returnAsIdArray) {
             $filtered = array();
             foreach ($response as $reportSuiteElements) {
-                $filtered = array_merge($filtered, array_filter($reportSuiteElements['available_elements'],
-                    create_function('&$a', 'return $a = $a["element_name"];')));
+                foreach ($reportSuiteElements['available_elements'] as $element) {
+                    $filtered[$element['element_name']] = $element['display_name'];
+                }
             }
             return array_unique($filtered);
         }
@@ -41,8 +42,9 @@ class AdobeDigitalMarketing_Api_ReportSuite extends AdobeDigitalMarketing_Api_Su
         if ($returnAsIdArray) {
             $filtered = array();
             foreach ($response as $reportSuiteMetrics) {
-                $filtered = array_merge($filtered, array_filter($reportSuiteMetrics['available_metrics'],
-                    create_function('&$a', 'return $a = $a["metric_name"];')));
+                foreach ($reportSuiteMetrics['available_metrics'] as $element) {
+                    $filtered[$element['metric_name']] = $element['display_name'];
+                }
             }
             return array_unique($filtered);
         }

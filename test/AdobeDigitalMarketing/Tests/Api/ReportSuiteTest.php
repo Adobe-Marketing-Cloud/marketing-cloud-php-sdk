@@ -18,8 +18,7 @@ class AdobeDigitalMarketing_Tests_Api_ReportSuiteTest extends AdobeDigitalMarket
 
         // combine all elements into a single array of IDs
         $this->assertTrue(count($response) > 0);
-        $this->assertFalse(is_array($response[0]));
-        $this->assertTrue(false !== array_search('evar1', $response));
+        $this->assertTrue(isset($response['evar1']));
     }
 
     public function testGetMetrics()
@@ -38,8 +37,7 @@ class AdobeDigitalMarketing_Tests_Api_ReportSuiteTest extends AdobeDigitalMarket
 
         // combine all metrics into a single array of IDs
         $this->assertTrue(count($response) > 0);
-        $this->assertFalse(is_array($response[0]));
-        $this->assertTrue(false !== array_search('pageviews', $response));
+        $this->assertTrue(isset($response['instances']));
     }
 
     public function getApiClass()
