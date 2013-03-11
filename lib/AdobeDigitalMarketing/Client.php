@@ -225,6 +225,21 @@ class AdobeDigitalMarketing_Client
         return $this->apis['company'];
     }
 
+    /**
+     * Get the report suite API
+     *
+     * @return  AdobeDigitalMarketing_Api_ReportSuite  the report suite API
+     */
+    public function getReportSuiteApi($options = array())
+    {
+        if(!isset($this->apis['report_suite']))
+        {
+            $this->apis['report_suite'] = new AdobeDigitalMarketing_Api_ReportSuite($this, $options);
+        }
+
+        return $this->apis['report_suite'];
+    }
+
 
     /**
      * Get the company API
