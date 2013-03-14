@@ -130,6 +130,28 @@ The above code will render the Report array, which will look something like this
 
 Returns an array of results as described in [the documentation](https://developer.omniture.com/en_US/documentation/sitecatalyst-reporting/r-reportqueueresponse)
 
+## Calling Additional Methods
+
+All the methods visible in the [API Explorer](https://developer.omniture.com/en_US/get-started/api-explorer) can be called
+using the `SuiteApi` class.  This is a generic class that accepts the method name and parameters, and will return the json
+encoded response of the result.
+
+    $adm->getSuiteApi()->post('Saint.ExportCreateJob', $parameters);
+
+## Curl Debugging
+
+If a request returns null, call the `getLastResponse` method on the client in order to see the curl information and raw response:
+
+    if (!$response = $adm->getReportApi()->getReport($reportId)) {
+      print_r($adm->getLastResponse());
+    }
+
+Passing in the debug flag to the HttpClient will output the response automatically when the response does not exist, or is not in json format
+
+    $adm = new AdobeDigitalMarketing_Client(
+      new AdobeDigitalMarketing_HttpClient_Curl(array('debug' => true))
+    );
+
 ## Command Line Utility
 
 > OAuth is not yet available for production use.  This functionality is still under development.
