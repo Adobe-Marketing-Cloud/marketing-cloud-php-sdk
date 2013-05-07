@@ -27,6 +27,7 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
         'debug'       => false,
         'proxy'       => null,
         'content-type' => 'json',
+        'follow-location' => true, // automatically follow "Location" header for 301 redirects
     );
 
     protected $auth;

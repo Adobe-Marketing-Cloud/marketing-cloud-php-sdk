@@ -87,7 +87,7 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
             CURLOPT_URL             => $url,
             CURLOPT_PORT            => $options['http_port'],
             CURLOPT_USERAGENT       => $options['user_agent'],
-            CURLOPT_FOLLOWLOCATION  => true,
+            CURLOPT_FOLLOWLOCATION  => $options['follow-location'],
             CURLOPT_RETURNTRANSFER  => true,
             CURLOPT_TIMEOUT         => $this->options['timeout'],
             CURLOPT_HTTPHEADER      => $headers,

@@ -10,6 +10,7 @@ class AdobeDigitalMarketing_Tests_HttpClientTest extends PHPUnit_Framework_TestC
 
         $this->assertEquals(33, $httpClient->getOption('timeout'));
         $this->assertEquals(443, $httpClient->getOption('http_port'));
+        $this->assertTrue($httpClient->getOption('follow-location'));
     }
 
     public function testGet()
