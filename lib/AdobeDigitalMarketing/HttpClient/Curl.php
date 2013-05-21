@@ -52,7 +52,7 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
             }
             else
             {
-                switch ($this->options['content-type']) {
+                switch ($options['content-type']) {
                     case 'form':
                         $headers[] = 'Content-Type: application/x-www-form-urlencoded';
                         $parameters = http_build_query($parameters);
@@ -72,7 +72,7 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
             $headers[] = 'Content-Length: 0';
         }
 
-        switch ($this->options['format']) {
+        switch ($options['format']) {
             case 'json':
                 $headers[] = 'Accept: application/json';
                 break;
@@ -89,13 +89,13 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
             CURLOPT_USERAGENT       => $options['user_agent'],
             CURLOPT_FOLLOWLOCATION  => $options['follow-location'],
             CURLOPT_RETURNTRANSFER  => true,
-            CURLOPT_TIMEOUT         => $this->options['timeout'],
+            CURLOPT_TIMEOUT         => $options['timeout'],
             CURLOPT_HTTPHEADER      => $headers,
-            CURLOPT_SSL_VERIFYPEER  => !isset($this->options['verifyssl']) || $this->options['verifyssl'],
+            CURLOPT_SSL_VERIFYPEER  => !isset($options['verifyssl']) || $options['verifyssl'],
         );
 
-        if (isset($this->options['curlopts']) && is_array($this->options['curlopts'])) {
-            $curlOptions += $this->options['curlopts'];
+        if (isset($options['curlopts']) && is_array($options['curlopts'])) {
+            $curlOptions += $options['curlopts'];
         }
 
         if ($options['proxy']) {
