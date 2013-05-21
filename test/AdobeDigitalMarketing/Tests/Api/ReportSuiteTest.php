@@ -1,6 +1,6 @@
 <?php
 
-class AdobeDigitalMarketing_Tests_Api_ReportSuiteTest extends AdobeDigitalMarketing_Tests_ApiTest
+class AdobeDigitalMarketing_Tests_Api_ReportSuiteTest extends AdobeDigitalMarketing_BaseTestCase
 {
     public function testGetElements()
     {
@@ -38,10 +38,5 @@ class AdobeDigitalMarketing_Tests_Api_ReportSuiteTest extends AdobeDigitalMarket
         // combine all metrics into a single array of IDs
         $this->assertTrue(count($response) > 0);
         $this->assertTrue(isset($response['instances']));
-    }
-
-    public function getApiClass()
-    {
-        return 'AdobeDigitalMarketing_Api_Company';
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-abstract class AdobeDigitalMarketing_Tests_ApiTest extends PHPUnit_Framework_TestCase
+abstract class AdobeDigitalMarketing_BaseTestCase extends PHPUnit_Framework_TestCase
 {
     protected $client_id;
     protected $client_secret;
@@ -29,16 +29,6 @@ abstract class AdobeDigitalMarketing_Tests_ApiTest extends PHPUnit_Framework_Tes
         $this->secret        = $options['secret'];
         $this->reportSuite   = $options['reportSuite'];
         $this->options       = $options;
-    }
-
-    abstract protected function getApiClass();
-
-    protected function getApiMock()
-    {
-        return $this->getMockBuilder($this->getApiClass())
-            ->setMethods(array('get', 'post'))
-            ->disableOriginalConstructor()
-            ->getMock();
     }
 
     protected function getClient($auth = 'wsse', $authenticate = true)

@@ -1,6 +1,6 @@
 <?php
 
-class AdobeDigitalMarketing_Tests_Auth_OAuthTest extends AdobeDigitalMarketing_Tests_ApiTest
+class AdobeDigitalMarketing_Tests_Auth_OAuthTest extends AdobeDigitalMarketing_BaseTestCase
 {
     protected $client_id;
     protected $client_secret;
@@ -18,10 +18,5 @@ class AdobeDigitalMarketing_Tests_Auth_OAuthTest extends AdobeDigitalMarketing_T
         $token = $oauth->getTokenFromUserCredentials($this->username, $this->password);
 
         $this->assertNotNull($token);
-    }
-
-    protected function getApiClass()
-    {
-        return 'AdobeDigitalMarketing_Api_OAuth';
     }
 }

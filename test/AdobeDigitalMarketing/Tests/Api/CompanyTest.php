@@ -1,6 +1,6 @@
 <?php
 
-class AdobeDigitalMarketing_Tests_Api_CompanyTest extends AdobeDigitalMarketing_Tests_ApiTest
+class AdobeDigitalMarketing_Tests_Api_CompanyTest extends AdobeDigitalMarketing_BaseTestCase
 {
     public function testQueueTrended()
     {
@@ -11,10 +11,5 @@ class AdobeDigitalMarketing_Tests_Api_CompanyTest extends AdobeDigitalMarketing_
         $response = $client->getCompanyApi()->getEndpoint('Adobe');
 
         $this->assertTrue(is_string($response));
-    }
-
-    public function getApiClass()
-    {
-        return 'AdobeDigitalMarketing_Api_Company';
     }
 }

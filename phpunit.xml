@@ -19,7 +19,7 @@
 
   <filter>
     <whitelist>
-      <directory suffix=".php">./lib/AdobeDigitalMarketing/</directory>
+      <directory suffix=".php">./lib/AdobeDigitalMarketing/Tests/</directory>
     </whitelist>
   </filter>
 </phpunit>

@@ -1,6 +1,6 @@
 <?php
 
-class AdobeDigitalMarketing_Tests_Api_ReportTest extends AdobeDigitalMarketing_Tests_ApiTest
+class AdobeDigitalMarketing_Tests_Api_ReportTest extends AdobeDigitalMarketing_BaseTestCase
 {
     public function testQueueTrended()
     {
@@ -51,10 +51,5 @@ class AdobeDigitalMarketing_Tests_Api_ReportTest extends AdobeDigitalMarketing_T
         ));
 
         $this->assertTrue(isset($response['data']));
-    }
-
-    protected function getApiClass()
-    {
-        return 'AdobeDigitalMarketing_Api_Report';
     }
 }
