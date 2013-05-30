@@ -20,7 +20,7 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
     protected function doRequest($url, array $parameters = array(), $httpMethod = 'GET', array $options = array())
     {
         $curlOptions = array();
-        $headers = array();
+        $headers = isset($options['header']) ? $options['headers'] : array();
 
         if ('POST' === $httpMethod) {
             $curlOptions += array(
