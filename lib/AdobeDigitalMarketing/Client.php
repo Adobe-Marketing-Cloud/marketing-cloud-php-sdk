@@ -291,6 +291,10 @@ class AdobeDigitalMarketing_Client
 
     public function setEndpoint($endpoint)
     {
+        if (0 === strpos($endpoint, 'http')) {
+            $parts = parse_url($endpoint);
+            $endpoint = $parts['host'];
+        }
         $this->getHttpClient()->setOption('endpoint', $endpoint);
     }
 
