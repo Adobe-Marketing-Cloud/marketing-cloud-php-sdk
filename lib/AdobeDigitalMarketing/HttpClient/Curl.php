@@ -40,6 +40,8 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
         }
 
         if ($auth = $this->getAuthService()) {
+            $options['url'] = $url;
+            $options['http_method'] = $httpMethod;
             list($headers, $parameters) = $auth->setAuthHeadersAndParameters($headers, $parameters, $options);
         }
 
@@ -82,6 +84,14 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
         }
 
         $this->debug('send '.$httpMethod.' request: '.$url);
+
+        // format headers
+        foreach ($headers as $i => $header) {
+            if (is_string($i)) {
+                $headers[] = "{$i}: $header";
+                unset($headers[$i]);
+            }
+        }
 
         $curlOptions += array(
             CURLOPT_URL             => $url,
