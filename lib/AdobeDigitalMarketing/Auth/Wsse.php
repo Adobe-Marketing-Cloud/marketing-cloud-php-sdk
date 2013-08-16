@@ -23,7 +23,7 @@ class AdobeDigitalMarketing_Auth_Wsse implements AdobeDigitalMarketing_AuthInter
             throw new AdobeDigitalMarketing_Auth_Exception("username and secret must be set before making a request");
         }
 
-        $nonce = md5(rand());
+        $nonce = $this->getNonce();
         $created = gmdate('Y-m-d H:i:s T');
 
         $digest = base64_encode(sha1($nonce.$created.$this->secret,true));
@@ -37,5 +37,20 @@ class AdobeDigitalMarketing_Auth_Wsse implements AdobeDigitalMarketing_AuthInter
         );
 
         return array($headers, $parameters);
+    }
+
+    /**
+     * Uses UUID Version 4
+     * @see http://en.wikipedia.org/wiki/Universally_unique_identifier
+     */
+    protected function getNonce()
+    {
+        return sprintf('%04x%04x-%04x-%03x4-%04x-%04x%04x%04x',
+            mt_rand(0, 65535), mt_rand(0, 65535),
+            mt_rand(0, 65535),
+            mt_rand(0, 4095),
+            bindec(substr_replace(sprintf('%016b', mt_rand(0, 65535)), '01', 6, 2)),
+            mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535)
+        );
     }
 }
