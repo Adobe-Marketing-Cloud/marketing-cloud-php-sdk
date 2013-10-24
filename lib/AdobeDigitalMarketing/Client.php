@@ -302,4 +302,11 @@ class AdobeDigitalMarketing_Client
     {
         return $this->getHttpClient()->getOption('endpoint');
     }
+
+    public function __clone()
+    {
+        // Force a copy of $httpClient, otherwise
+        // it will point to same object.
+        $this->httpClient = clone $this->httpClient;
+    }
 }
