@@ -19,7 +19,8 @@ class AdobeDigitalMarketing_Api_SuiteApi extends AdobeDigitalMarketing_Api
      */
     public function get($method, array $parameters = array(), $requestOptions = array())
     {
-        return parent::get($this->getSuitePath($method), $parameters, $requestOptions);
+        $parameters['method'] = $method;
+        return parent::get($this->getSuitePath(), $parameters, $requestOptions);
     }
 
     /**
@@ -36,8 +37,8 @@ class AdobeDigitalMarketing_Api_SuiteApi extends AdobeDigitalMarketing_Api
         return parent::post($this->getSuitePath($method), $parameters, $requestOptions);
     }
 
-    private function getSuitePath($method)
+    private function getSuitePath($method = null)
     {
-        return sprintf('admin/%s/rest/?method=%s', $this->client->getHttpClient()->getOption('api_version'), $method);
+        return sprintf('admin/%s/rest/%s', $this->client->getHttpClient()->getOption('api_version'), is_null($method) ? '' : '?method='.$method);
     }
 }
