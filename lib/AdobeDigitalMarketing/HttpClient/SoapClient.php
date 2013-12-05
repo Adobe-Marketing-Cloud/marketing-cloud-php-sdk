@@ -74,17 +74,25 @@ class AdobeDigitalMarketing_HttpClient_SoapClient extends AdobeDigitalMarketing_
 
         $template = $this->getMethodParameters($soap, $method);
         $parameters = $this->orderParameters($parameters, $template);
+        $error = null;
+        $response = null;
 
         try {
             $response = $soap->__soapCall($method, $parameters, null, $soapHeaders);
-            $error = '';
         } catch (SoapFault $e) {
-            $response = $soap->__getLastResponse();
-            $error = $e->getMessage();
+            if ($e->faultcode == 'Server') {
+                $error = $e->getMessage();
+            } else {
+                $response = array(
+                    'error' => $e->faultcode == 'Client' ? 'Bad Request' : $e->faultcode,
+                    'error_description' => $e->getMessage(),
+                );
+            }
         }
 
         return array(
-            'response' => $response,
+            'response' => $soap->__getLastResponse(),
+            'response_obj' => $response,
             'headers'  => $soap->__getLastResponseHeaders(),
             'errorMessage' => $error,
         );
@@ -92,7 +100,7 @@ class AdobeDigitalMarketing_HttpClient_SoapClient extends AdobeDigitalMarketing_
 
     protected function decodeResponse($response)
     {
-        return json_decode(json_encode($response['response']), true);
+        return json_decode(json_encode($response['response_obj']), true);
     }
 
     protected function createSoapAuthHeader($headers)
