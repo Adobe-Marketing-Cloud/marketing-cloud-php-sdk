@@ -24,7 +24,7 @@ class AdobeDigitalMarketing_Auth_Wsse implements AdobeDigitalMarketing_AuthInter
         }
 
         $nonce = $this->getNonce();
-        $created = gmdate('Y-m-d H:i:s T');
+        $created = gmdate('c');
 
         $digest = base64_encode(sha1($nonce.$created.$this->secret,true));
         $b64nonce = base64_encode($nonce);
