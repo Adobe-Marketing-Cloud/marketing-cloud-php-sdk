@@ -5,5 +5,9 @@ php:
   - 5.3
   - 5.4
 
+matrix:
+  allow_failures:
+    - php: 5.2
+
 env:
  - ADM_USERNAME="test:Shaffer Corp SBX" ADM_SECRET=4403235623ba9d64b0d8d5b3315fdc7c ADM_REPORTSUITE=shaffertest ADM_ENDPOINT=api-sbx1.omniture.com
