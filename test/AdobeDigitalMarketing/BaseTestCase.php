@@ -10,25 +10,31 @@ abstract class AdobeDigitalMarketing_BaseTestCase extends PHPUnit_Framework_Test
     protected $reportSuite;
     protected $options;
 
-    public function initialize($options)
+    public function getOptionsFromGlobals()
     {
-        $options = array_merge(array(
-            'client_id'     => null,
-            'client_secret' => null,
-            'username'      => null,
-            'password'      => null,
-            'secret'        => null,
-            'reportSuite'   => null,
-            'debug'         => true,
-        ), $options);
+        $options = array(
+           'client_id'      => isset($_SERVER['ADM_CLIENTID']) ? $_SERVER['ADM_CLIENTID'] : null,
+           'client_secret'  => isset($_SERVER['ADM_CLIENTSECRET']) ? $_SERVER['ADM_CLIENTSECRET'] : null,
+           'username'       => isset($_SERVER['ADM_USERNAME']) ? $_SERVER['ADM_USERNAME'] : null,
+           'password'       => isset($_SERVER['ADM_PASSWORD']) ? $_SERVER['ADM_PASSWORD'] : null,
+           'secret'         => isset($_SERVER['ADM_SECRET']) ? $_SERVER['ADM_SECRET'] : null,
+           'reportSuite'    => isset($_SERVER['ADM_REPORTSUITE']) ? $_SERVER['ADM_REPORTSUITE'] : null,
+           'endpoint'       => isset($_SERVER['ADM_ENDPOINT']) ? $_SERVER['ADM_ENDPOINT'] : null,
+           'debug'          => isset($_SERVER['ADM_DEBUG']) ? $_SERVER['ADM_DEBUG'] : true,
+           'proxy'          => isset($_SERVER['ADM_PROXY']) ? $_SERVER['ADM_PROXY'] : null,
+        );
 
-        $this->client_id     = $options['client_id'];
-        $this->client_secret = $options['client_secret'];
-        $this->username      = $options['username'];
-        $this->password      = $options['password'];
-        $this->secret        = $options['secret'];
-        $this->reportSuite   = $options['reportSuite'];
-        $this->options       = $options;
+        return $options;
+    }
+
+    public function provideApiClients()
+    {
+        $options = $this->getOptionsFromGlobals();
+
+        return array(
+            array($this->getClient('wsse'), $options),
+            array($this->getClient('soap'), $options),
+        );
     }
 
     protected function getClient($auth = 'wsse', $authenticate = true)
@@ -36,21 +42,30 @@ abstract class AdobeDigitalMarketing_BaseTestCase extends PHPUnit_Framework_Test
         switch ($auth) {
             case 'wsse':
                 $this->initializeWsseFromGlobals();
+                $options = $this->getOptionsFromGlobals();
 
-                $client = new AdobeDigitalMarketing_Client(new AdobeDigitalMarketing_HttpClient_Curl($this->options));
+                $client = new AdobeDigitalMarketing_Client(new AdobeDigitalMarketing_HttpClient_Curl($options));
                 if ($authenticate) {
-                    $client->authenticate($this->username, $this->secret);
+                    $client->authenticate($options['username'], $options['secret']);
+                }
+                break;
+            case 'soap':
+                $this->initializeWsseFromGlobals();
+                $options = $this->getOptionsFromGlobals();
+
+                $client = new AdobeDigitalMarketing_Client(new AdobeDigitalMarketing_HttpClient_SoapClient($options));
+                if ($authenticate) {
+                    $client->authenticate($options['username'], $options['secret']);
                 }
                 break;
             case 'oauth':
                 $this->initializeOAuthFromGlobals();
+                $options = $this->getOptionsFromGlobals();
 
-                $client = new AdobeDigitalMarketing_Client(new AdobeDigitalMarketing_HttpClient_Curl(array(
-                    'endpoint' => $this->options['endpoint'],
-                )));
+                $client = new AdobeDigitalMarketing_Client(new AdobeDigitalMarketing_HttpClient_Curl($options));
                 if ($authenticate) {
                     $client->setAuthService(new AdobeDigitalMarketing_Auth_OAuth2())
-                        ->authenticate($this->client_id, $this->client_secret);
+                        ->authenticate($options['client_id'], $options['client_secret']);
                 }
                 break;
         }
@@ -65,20 +80,6 @@ abstract class AdobeDigitalMarketing_BaseTestCase extends PHPUnit_Framework_Test
             || !isset($_SERVER['ADM_REPORTSUITE'])) {
             throw new AdobeDigitalMarketing_Auth_Exception("You must define a username/secret/reportsuite for testing in an environment variable (ADM_USERNAME, ADM_SECRET, ADM_REPORTSUITE)");
         }
-
-        $options = array(
-            'username'    => $_SERVER['ADM_USERNAME'],
-            'secret'      => $_SERVER['ADM_SECRET'],
-            'reportSuite' => $_SERVER['ADM_REPORTSUITE'],
-        );
-
-        if (isset($_SERVER['ADM_ENDPOINT'])) {
-            $options['endpoint'] = $_SERVER['ADM_ENDPOINT'];
-        }
-
-        $this->initialize($options);
-
-        return $this;
     }
 
     protected function initializeOAuthFromGlobals()
@@ -89,20 +90,5 @@ abstract class AdobeDigitalMarketing_BaseTestCase extends PHPUnit_Framework_Test
             || !isset($_SERVER['ADM_CLIENTSECRET'])) {
             throw new AdobeDigitalMarketing_Auth_Exception("You must define a client_id/client_secret/username/secret/reportsuite for testing in an environment variable (ADM_CLIENTID, ADM_CLIENTSECRET, ADM_USERNAME, ADM_PASSWORD)");
         }
-
-        $options = array(
-           'client_id' => $_SERVER['ADM_CLIENTID'],
-           'client_secret' => $_SERVER['ADM_CLIENTSECRET'],
-           'username' => $_SERVER['ADM_USERNAME'],
-           'password' => $_SERVER['ADM_PASSWORD'],
-        );
-
-        if (isset($_SERVER['ADM_ENDPOINT'])) {
-            $options['endpoint'] = $_SERVER['ADM_ENDPOINT'];
-        }
-
-        $this->initialize($options);
-
-        return $this;
     }
 }

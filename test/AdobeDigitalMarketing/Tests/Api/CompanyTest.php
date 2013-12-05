@@ -2,7 +2,7 @@
 
 class AdobeDigitalMarketing_Tests_Api_CompanyTest extends AdobeDigitalMarketing_BaseTestCase
 {
-    public function testQueueTrended()
+    public function testGetEndpoint()
     {
         $client = new AdobeDigitalMarketing_Client(new AdobeDigitalMarketing_HttpClient_Curl(array(
             'curlopts' => array(CURLOPT_SSLVERSION => 3), // for travis-ci

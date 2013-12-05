@@ -2,25 +2,28 @@
 
 class AdobeDigitalMarketing_Tests_Api_ReportTest extends AdobeDigitalMarketing_BaseTestCase
 {
-    public function testQueueTrended()
+    /** @dataProvider provideApiClients */
+    public function testQueueTrended($client, $options)
     {
-        $api = $this->getClient()->getReportApi();
+        $api = $client->getReportApi();
 
         $response = $api->queueTrended(array(
-           'reportSuiteID' => $this->reportSuite,
+           'reportSuiteID' => $options['reportSuite'],
            'metrics'       => array('pageviews'),
+           'locale'        => "en_US",
         ));
 
         $this->assertTrue(isset($response['reportID']));
         $this->assertNotEquals($response['reportID'], 0);
     }
 
-    public function testGetReport()
+    /** @dataProvider provideApiClients */
+    public function testGetReport($client, $options)
     {
         $api = $this->getClient()->getReportApi();
 
         $response = $api->queueRanked(array(
-           'reportSuiteID' => $this->reportSuite,
+           'reportSuiteID' => $options['reportSuite'],
            'date'          => date('Y-m-d'),
            'metrics'       => array(
                array('id' => 'pageviews'),
@@ -35,12 +38,13 @@ class AdobeDigitalMarketing_Tests_Api_ReportTest extends AdobeDigitalMarketing_B
         $this->assertTrue(in_array($report['status'], array('ready', 'done', 'not ready')));
     }
 
-    public function testGetRankedReport()
+    /** @dataProvider provideApiClients */
+    public function testGetRankedReport($client, $options)
     {
         $api = $this->getClient()->getReportApi();
 
         $response = $api->getRankedReport(array(
-           'reportSuiteID' => $this->reportSuite,
+           'reportSuiteID' => $options['reportSuite'],
            'date'          => date('Y-m-d'),
            'metrics'       => array(
                array('id' => 'pageviews'),
