@@ -113,7 +113,7 @@ class AdobeDigitalMarketing_HttpClient_SoapClient extends AdobeDigitalMarketing_
             return $obj->enc_value;
         }
 
-        if ($obj instanceof stdObj) {
+        if ($obj instanceof stdClass) {
             $obj = (array) $obj;
         } elseif (!is_array($obj)) {
             return $obj;
