@@ -41,6 +41,10 @@ class AdobeDigitalMarketing_HttpClient_SoapClient extends AdobeDigitalMarketing_
             $soapOptions['proxy_port'] = $port;
         }
 
+        if (isset($options['soapopts'])) {
+            $soapOptions += $options['soapopts'];
+        }
+
         // create the soap client
         return new SoapClient($options['wsdl'], $soapOptions);
     }
@@ -100,7 +104,27 @@ class AdobeDigitalMarketing_HttpClient_SoapClient extends AdobeDigitalMarketing_
 
     protected function decodeResponse($response)
     {
-        return json_decode(json_encode($response['response_obj']), true);
+        return $this->soapObjectToArray($response['response_obj']);
+    }
+
+    private function soapObjectToArray($obj)
+    {
+        if ($obj instanceof SoapVar) {
+            return $obj->enc_value;
+        }
+
+        if ($obj instanceof stdObj) {
+            $obj = (array) $obj;
+        } elseif (!is_array($obj)) {
+            return $obj;
+        }
+
+        // from here on, the object is an array
+        foreach ($obj as $key => $value) {
+            $obj[$key] = $this->soapObjectToArray($value);
+        }
+
+        return json_decode(json_encode($obj), true);
     }
 
     protected function createSoapAuthHeader($headers)
