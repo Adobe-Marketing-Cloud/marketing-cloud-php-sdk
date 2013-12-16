@@ -137,12 +137,12 @@ class AdobeDigitalMarketing_HttpClient_SoapClient extends AdobeDigitalMarketing_
 
         if (preg_match('/X-WSSE: UsernameToken Username="(.*)", PasswordDigest="(.*)", Nonce="(.*)", Created="(.*)"/', $headers[0], $matches)) {
             $wsseHeader = <<<EOF
-<wsse:Security SOAP-ENV:mustUnderstand="1">
-    <wsse:UsernameToken wsu:Id="User">
+<wsse:Security SOAP-ENV:mustUnderstand="1" xmlns:wsse="http://www.omniture.com">
+    <wsse:UsernameToken wsse:Id="User">
          <wsse:Username>%s</wsse:Username>
          <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest">%s</wsse:Password>
          <wsse:Nonce>%s</wsse:Nonce>
-         <wsu:Created>%s</wsu:Created>
+         <wsu:Created>%s</wsse:Created>
     </wsse:UsernameToken>
 </wsse:Security>
 EOF;
