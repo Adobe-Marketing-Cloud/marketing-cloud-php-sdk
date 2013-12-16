@@ -142,7 +142,7 @@ class AdobeDigitalMarketing_HttpClient_SoapClient extends AdobeDigitalMarketing_
          <wsse:Username>%s</wsse:Username>
          <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest">%s</wsse:Password>
          <wsse:Nonce>%s</wsse:Nonce>
-         <wsu:Created>%s</wsse:Created>
+         <wsse:Created>%s</wsse:Created>
     </wsse:UsernameToken>
 </wsse:Security>
 EOF;
