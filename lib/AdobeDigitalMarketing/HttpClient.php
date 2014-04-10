@@ -219,6 +219,9 @@ abstract class AdobeDigitalMarketing_HttpClient implements AdobeDigitalMarketing
 
             case 'xspf':
                 throw new LogicException("format 'xspf' not yet supported by this library");
+
+            case 'raw':
+                return $response['response'];
         }
 
         throw new LogicException(__CLASS__.' only supports json, json, xml, and xspf formats, '.$this->options['format'].' given.');
