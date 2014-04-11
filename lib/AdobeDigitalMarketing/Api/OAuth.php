@@ -9,12 +9,13 @@
  */
 class AdobeDigitalMarketing_Api_OAuth extends AdobeDigitalMarketing_Api
 {
-    public function getTokenFromUserCredentials($username, $password)
+    public function getTokenFromUserCredentials($username, $password, $scope = null)
     {
         $response = $this->post('token', array(
                 'grant_type'    => 'password',
                 'username'      => $username,
-                'password'      => $password
+                'password'      => $password,
+                'scope'         => $scope,
         ));
 
         if (!isset($response['access_token'])) {
