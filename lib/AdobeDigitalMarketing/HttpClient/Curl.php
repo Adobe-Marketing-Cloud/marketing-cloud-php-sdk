@@ -145,7 +145,7 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
 
         curl_close($curl);
 
-        return compact('response', 'headers', 'errorNumber', 'errorMessage');
+        return compact('response', 'headers', 'errorNumber', 'errorMessage', 'curlOptions');
     }
 
     protected function buildQuery($parameters)
