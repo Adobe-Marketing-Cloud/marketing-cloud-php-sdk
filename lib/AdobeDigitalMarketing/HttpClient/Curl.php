@@ -143,6 +143,21 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
         $errorNumber = curl_errno($curl);
         $errorMessage = curl_error($curl);
 
+        if (isset($curlOptions[CURLOPT_HEADER]) && $curlOptions[CURLOPT_HEADER]) {
+            $header_size = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+            $header = substr($response, 0, $header_size);
+            $response = substr($response, $header_size);
+            $headers['response'] = array();
+            foreach (explode("\n", trim($header)) as $line) {
+                if (false !== strpos($line, ':')) {
+                    list($key, $value) = explode(':', $line, 2);
+                    $headers['response_headers'][strtolower($key)] = trim($value);
+                } else {
+                    $headers['response_headers'][] = $line;
+                }
+            }
+        }
+
         curl_close($curl);
 
         return compact('response', 'headers', 'errorNumber', 'errorMessage', 'curlOptions');
@@ -155,8 +170,7 @@ class AdobeDigitalMarketing_HttpClient_Curl extends AdobeDigitalMarketing_HttpCl
 
     protected function debug($message)
     {
-        if($this->options['debug'])
-        {
+        if ($this->options['debug']) {
             print $message."\n";
         }
     }
