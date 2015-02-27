@@ -4,31 +4,26 @@
 A simple, Object Oriented wrapper for the Adobe Marketing Cloud APIs written in PHP5.
 This library is modeled after the [php-github-api](https://github.com/ornicar/php-github-api) library built by [ornicar](https://github.com/ornicar)
 
-Uses the [Adobe Marketing Cloud APIs](http://developer.omniture.com/en_US/documentation). Default version is 1.3, but 1.2 is compatible.
+Uses the [Adobe Marketing Cloud APIs](https://marketing.adobe.com/developer/documentation). Default version is 1.3, but 1.2 is compatible.
 
 Requires
 
- * PHP 5.2 or higher
+ * PHP 5.3 or higher
  * [php curl](http://php.net/manual/en/book.curl.php) but it is possible to write another transport layer..
 
-If the method you need does not exist yet, dont hesitate to request it with an [issue](http://github.com/Adobe-Digital-Marketing/adobe-digital-marketing-php-sdk/issues)!
+If the method you need does not exist yet, don't hesitate to request it with an [issue](http://github.com/Adobe-Digital-Marketing/adobe-digital-marketing-php-sdk/issues)!
 
 ## Autoload
 
-The first step to use adobe-digital-marketing-php-sdk is to register its autoloader:
+The first step to use include the library via composer:
 
-    require_once '/path/to/sdk/lib/AdobeDigitalMarketing/Autoloader.php';
-    AdobeDigitalMarketing_Autoloader::register();
+    require_once '/vendor/autoload.php';
 
-Replace the `/path/to/sdk/` path with the path you used for adobe-digital-marketing-php-sdk installation.
+## Instantiate a new AdobeMarketingCloud Client
 
-> This SDK follows the PEAR convention names for its classes, which means you can easily integrate the class loading in your own autoloader.
+    $adm = new AdobeMarketingCloud\Client();
 
-## Instantiate a new AdobeDigitalMarketing Client
-
-    $adm = new AdobeDigitalMarketing_Client();
-
-From this object you can now access all of the different AdobeDigitalMarketing APIs (listed below)
+From this object you can now access all of the different AdobeMarketingCloud APIs (listed below)
 
 ### Authenticate a user
 
@@ -56,13 +51,13 @@ Next requests will not be authenticated
 ## Reports
 
 For queueing SiteCatalyst reports
-Wraps [SiteCatalyst Report API](http://developer.omniture.com/en_US/documentation/sitecatalyst-reporting).
+Wraps [SiteCatalyst Report API](https://marketing.adobe.com/developer/documentation/sitecatalyst-reporting/c-overview-1).
 
     $reportApi = $adm->getReportApi();
 
 ### Run a Ranked Report
 
-    $response = $reportApi->queueRanked(array(
+    $response = $reportApi->queue(array(
         'reportSuiteID' => 'your-id',
         'date'     => date('Y-m-d'),
         'metrics'  => array(
@@ -88,7 +83,7 @@ The above code will render the status of your queued report, which will look som
 
 Once the report ID is retrieved for the trended, ranked, or overtime report, use the Report.GetReport API call to retrieve the report
 
-    $response = $reportApi->queueRanked(array(
+    $response = $reportApi->queue(array(
         //... (see above)
     ));
 
@@ -128,7 +123,7 @@ The above code will render the Report array, which will look something like this
         )
     )
 
-Returns an array of results as described in [the documentation](https://developer.omniture.com/en_US/documentation/sitecatalyst-reporting/r-reportqueueresponse)
+Returns an array of results as described in [the documentation](https://marketing.adobe.com/developer/documentation/analytics-reporting-1-4/r-queue)
 
 ## Calling Additional Methods
 
@@ -148,8 +143,8 @@ If a request returns null, call the `getLastResponse` method on the client in or
 
 Passing in the debug flag to the HttpClient will output the response automatically when the response does not exist, or is not in json format
 
-    $adm = new AdobeDigitalMarketing_Client(
-      new AdobeDigitalMarketing_HttpClient_Curl(array('debug' => true))
+    $adm = new AdobeMarketingCloud\Client(
+      new AdobeMarketingCloud\HttpClient\Curl(array('debug' => true))
     );
 
 ## Command Line Utility
@@ -164,14 +159,14 @@ To get started, copy over the configuration file:
 
 Once this is done, run the `adm` command to get started
 
-    $ ./bin/adm
+    $ ./bin/amc
 
     Calls the Adobe Marketing Cloud APIs
     To get started, call
 
-        $ adm authorize
+        $ amc authorize
 
-    to retrieve a token.  Some other options avialable are
+    to retrieve a token.  Some other options available are
 
      -h, --help      Display a help message and exit
      -v, --version   Display the current api version
@@ -216,12 +211,12 @@ The default endpoint is **api.omniture.com**.  If you are experiencing issues, c
 
 In this case, the endpoint is *api2.omniture.com*.  To use this endpoint instead, set the endpoint in your profile:
 
-    $ ./bin/adm profile endpoint api2.omniture.com
+    $ ./bin/amc profile endpoint api2.omniture.com
     default value for "endpoint" set to api2.omniture.com
 
 Now all subsequent requests will use this endpoint.  If you need to use an endpoint other than the default, you can pass this in with the `-e` or `--endpoint` options
 
-    $ ./bin/adm authorize CLIENT_ID CLIENT_SECRET USERNAME PASSWORD --endpoint 'api3.omniture.com'
+    $ ./bin/amc authorize CLIENT_ID CLIENT_SECRET USERNAME PASSWORD --endpoint 'api3.omniture.com'
 
 ## To Do
 

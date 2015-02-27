@@ -13,9 +13,12 @@
     ],
     "homepage": "http://github.com/Adobe-Marketing-Cloud/marketing-cloud-php-sdk",
     "require":{
-        "php":">=5.2.4"
+        "php":">=5.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
     },
     "autoload": {
-        "psr-0": { "AdobeDigitalMarketing": "lib/" }
+        "psr-0": { "AdobeMarketingCloud\\": "lib" }
     }
 }
