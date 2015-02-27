@@ -13,4 +13,4 @@ before_script:
 - composer install
 
 env:
- - ADM_USERNAME="test:Shaffer Corp SBX" ADM_SECRET=4403235623ba9d64b0d8d5b3315fdc7c ADM_REPORTSUITE=shaffertest ADM_ENDPOINT=api-sbx1.omniture.com
+ - AMC_USERNAME="test:Shaffer Corp SBX" AMC_SECRET=4403235623ba9d64b0d8d5b3315fdc7c AMC_REPORTSUITE=shaffertest AMC_ENDPOINT=api-sbx1.omniture.com
