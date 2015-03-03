@@ -4,7 +4,7 @@
 A simple, Object Oriented wrapper for the Adobe Marketing Cloud APIs written in PHP5.
 This library is modeled after the [php-github-api](https://github.com/ornicar/php-github-api) library built by [ornicar](https://github.com/ornicar)
 
-Uses the [Adobe Marketing Cloud APIs](https://marketing.adobe.com/developer/documentation). Default version is 1.3, but 1.2 is compatible.
+Uses the [Adobe Marketing Cloud APIs](https://marketing.adobe.com/developer/documentation). Default version is 1.4, but 1.3 and  1.2 are compatible.
 
 Requires
 
