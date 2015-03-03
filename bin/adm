@@ -1,7 +1,0 @@
-#!/usr/bin/env php
-<?php
-
-require dirname(__FILE__).'/../lib/AdobeDigitalMarketing/Autoloader.php';
-AdobeDigitalMarketing_Autoloader::register();
-
-AdobeDigitalMarketing_Cli::run($argv);

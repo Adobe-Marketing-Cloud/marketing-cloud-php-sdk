@@ -12,14 +12,14 @@
          bootstrap="test/bootstrap.php"
 >
   <testsuites>
-    <testsuite name="adobe-digital-marketing-php-sdk Test Suite">
-      <directory>./test/AdobeDigitalMarketing/</directory>
+    <testsuite name="adobe-marketing-cloud-php-sdk Test Suite">
+      <directory>./test/AdobeMarketingCloud/</directory>
     </testsuite>
   </testsuites>
 
   <filter>
     <whitelist>
-      <directory suffix=".php">./lib/AdobeDigitalMarketing/Tests/</directory>
+      <directory suffix=".php">./lib/AdobeMarketingCloud/Tests/</directory>
     </whitelist>
   </filter>
 </phpunit>
