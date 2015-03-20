@@ -230,22 +230,6 @@ class Client
     }
 
     /**
-     * Get the report suite API
-     *
-     * @return  Api\ReportSuite  the report suite API
-     */
-    public function getReportSuiteApi($options = array())
-    {
-        if(!isset($this->apis['report_suite']))
-        {
-            $this->apis['report_suite'] = new Api\ReportSuite($this, $options);
-        }
-
-        return $this->apis['report_suite'];
-    }
-
-
-    /**
      * Get the OAuth API
      *
      * @return  Api\OAuth  the company API
