@@ -52,6 +52,34 @@ abstract class Api implements ApiInterface
         return $this->client->post($path, $parameters, $requestOptions);
     }
 
+     /**
+     * Call any path, PUT method
+     * Ex: $api->put('segments/54321abcdef', array('name' => 'Best Segment Ever'))
+     *
+     * @param   string  $path             the AdobeMarketingCloud path
+     * @param   array   $parameters       PUT parameters
+     * @param   array   $requestOptions   reconfigure the request
+     * @return  array                     data returned
+     */
+    protected function put($path, array $parameters = array(), $requestOptions = array())
+    {
+        return $this->client->put($path, $parameters, $requestOptions);
+    }
+
+    /**
+     * Call any path, DELETE method
+     * Ex: $api->delete('calculatedMetrics/12345abcedf')
+     *
+     * @param   string  $path             the AdobeMarketingCloud path
+     * @param   array   $parameters       POST parameters
+     * @param   array   $requestOptions   reconfigure the request
+     * @return  array                     data returned
+     */
+    protected function delete($path, array $parameters = array(), $requestOptions = array())
+    {
+        return $this->client->delete($path, $parameters, $requestOptions);
+    }
+
     /**
     * Change an option value.
     *
