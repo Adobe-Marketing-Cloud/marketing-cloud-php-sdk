@@ -181,8 +181,8 @@ class Report extends SuiteApi
 
     protected function returnResponse($response, $key = null)
     {
-        if (isset($response['status']) && 0 === strpos($response['status'], 'error')) {
-            throw new ReportError($response['statusMsg'], $response['status']);
+        if (array_key_exists('error', $response) && array_key_exists('error_description', $response)) {
+            throw new ReportError($response['error'], $response['error_description']);
         }
 
         return parent::returnResponse($response, $key);
