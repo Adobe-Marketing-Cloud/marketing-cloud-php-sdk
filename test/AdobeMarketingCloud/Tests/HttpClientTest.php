@@ -49,6 +49,38 @@ class HttpClientTest extends \PHPUnit_Framework_TestCase
         $httpClient->post($path, $parameters, $options);
     }
 
+    public function testPut()
+    {
+        $path       = '/some/path';
+        $parameters = array('a' => 'b');
+        $options    = array('c' => 'd');
+
+        $httpClient = $this->getHttpClientMockBuilder()
+            ->setMethods(array('doRequest', 'request'))
+            ->getMock();
+        $httpClient->expects($this->once())
+            ->method('request')
+            ->with($path, $parameters, 'PUT', $options);
+
+        $httpClient->put($path, $parameters, $options);
+    }
+
+    public function testDelete()
+    {
+        $path       = '/some/path';
+        $parameters = array('a' => 'b');
+        $options    = array('c' => 'd');
+
+        $httpClient = $this->getHttpClientMockBuilder()
+            ->setMethods(array('doRequest', 'request'))
+            ->getMock();
+        $httpClient->expects($this->once())
+            ->method('request')
+            ->with($path, $parameters, 'DELETE', $options);
+
+        $httpClient->delete($path, $parameters, $options);
+    }
+
     public function testRequest()
     {
         $path       = '/some/path';
