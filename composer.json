@@ -6,6 +6,11 @@
     "license":"MIT",
     "authors":[
         {
+          "name":"Gary Rogers",
+          "email": "gmrwebde@gmail.com",
+          "homepage":"http://github.com/garyr"
+        },
+        {
             "name":"Brent Shaffer",
             "email": "bshafs@gmail.com",
             "homepage":"http://github.com/bshaffer"
