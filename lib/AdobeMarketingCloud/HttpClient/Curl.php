@@ -103,10 +103,16 @@ class Curl extends HttpClient
             CURLOPT_USERAGENT       => $options['user_agent'],
             CURLOPT_FOLLOWLOCATION  => $options['follow-location'],
             CURLOPT_RETURNTRANSFER  => true,
-            CURLOPT_TIMEOUT         => $options['timeout'],
             CURLOPT_HTTPHEADER      => $headers,
             CURLOPT_SSL_VERIFYPEER  => !isset($options['verifyssl']) || $options['verifyssl'],
         );
+
+        // handle timeout values less than 1 second
+        if (is_int($options['timeout'])) {
+            $curlOptions[CURLOPT_TIMEOUT] = $options['timeout'];
+        } else if ($options['timeout'] > 0 && $options['timeout'] < 1) {
+            $curlOptions[CURLOPT_TIMEOUT_MS] = $options['timeout'] * 1000;
+        }
 
         if (isset($options['curlopts']) && is_array($options['curlopts'])) {
             $curlOptions += $options['curlopts'];
