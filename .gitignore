@@ -1,3 +1,4 @@
 test/credentials.php
 config/profile.json
 vendor/*
+composer.lock

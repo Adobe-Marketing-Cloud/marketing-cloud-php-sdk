@@ -30,4 +30,24 @@ class CurlTest extends BaseTestCase
         $this->assertEquals('application/json', $fullResponse['headers']['response_headers']['content-type']);
 
     }
+
+    public function testCurlTimeout()
+    {
+        $options = $this->getOptionsFromGlobals();
+        $options['curlopts'] = array(CURLOPT_HEADER => false);
+
+        $options['timeout'] = 0.5;
+
+        $client = new Client(new Curl($options));
+        $client->authenticate($options['username'], $options['secret']);
+
+        ob_start(); // timeout causes a print_r
+        $client->getCompanyApi()->getReportSuites();
+        ob_clean();
+
+        $fullResponse = $client->getLastResponse();
+
+        $this->assertEquals($fullResponse['errorNumber'], CURLE_OPERATION_TIMEOUTED);
+        $this->assertStringStartsWith('Operation timed out after ', $fullResponse['errorMessage']);
+    }
 }
