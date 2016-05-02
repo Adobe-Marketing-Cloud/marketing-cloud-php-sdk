@@ -14,11 +14,13 @@ class Wsse implements AuthInterface
 {
     private $username;
     private $secret;
+    private $algorithm;
 
-    public function authenticate($username, $secret)
+    public function authenticate($username, $secret, $algorithm = null)
     {
         $this->username = $username;
         $this->secret = $secret;
+        $this->algorithm = $algorithm;
     }
 
     public function setAuthHeadersAndParameters(array $headers, array $parameters, array $options = array())
@@ -30,15 +32,27 @@ class Wsse implements AuthInterface
         $nonce = $this->getNonce();
         $created = gmdate('c');
 
-        $digest = base64_encode(sha1($nonce.$created.$this->secret,true));
+        if (empty($this->algorithm)) {
+            $algorithm = 'sha1';
+        } else {
+            $algorithm = $this->algorithm;
+        }
+
+        $digest = base64_encode(hash($algorithm,$nonce.$created.$this->secret,true));
         $b64nonce = base64_encode($nonce);
 
-        $headers[] = sprintf('X-WSSE: UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"',
-          $this->username,
-          $digest,
-          $b64nonce,
-          $created
+        $header = sprintf('X-WSSE: UsernameToken Username="%s", PasswordDigest="%s", Nonce="%s", Created="%s"',
+            $this->username,
+            $digest,
+            $b64nonce,
+            $created
         );
+
+        if (!empty($this->algorithm)) {
+            $header = sprintf('%s, Algorithm="%s"', $header, $this->algorithm);
+        }
+
+        $headers[] = $header;
 
         return array($headers, $parameters);
     }
