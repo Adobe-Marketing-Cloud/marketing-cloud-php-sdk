@@ -138,14 +138,14 @@ class Curl extends HttpClient
      *
      * @return  array   the response
      */
-    protected function decodeResponse($response)
+    protected function decodeResponse($response, $options = array())
     {
         // "false" means a failed curl request
         if (false === $response['response']) {
             $this->debug(print_r($response, true));
             return false;
         }
-        return parent::decodeResponse($response);
+        return parent::decodeResponse($response, $options);
     }
 
     protected function doCurlCall(array $curlOptions)
