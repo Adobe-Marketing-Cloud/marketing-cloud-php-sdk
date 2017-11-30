@@ -57,7 +57,7 @@ Wraps [SiteCatalyst Report API](https://marketing.adobe.com/developer/documentat
 
 ### Run a Ranked Report
 
-    $response = $reportApi->queue(array(
+    $response = $reportApi->queueReport(array(
         'reportSuiteID' => 'your-id',
         'date'     => date('Y-m-d'),
         'metrics'  => array(
@@ -83,7 +83,7 @@ The above code will render the status of your queued report, which will look som
 
 Once the report ID is retrieved for the trended, ranked, or overtime report, use the Report.GetReport API call to retrieve the report
 
-    $response = $reportApi->queue(array(
+    $response = $reportApi->queueReport(array(
         //... (see above)
     ));
 
