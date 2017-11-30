@@ -206,12 +206,16 @@ abstract class HttpClient implements HttpClientInterface
      *
      * @return  array   the response
      */
-    protected function decodeResponse($response)
+    protected function decodeResponse($response, $options = array())
     {
-        switch ($this->options['format'])
+        if (count($options) == 0) {
+            $options = $this->options;
+        }
+
+        switch ($options['format'])
         {
             case 'json':
-                if ((null === $json = json_decode($response['response'], true)) && ($this->options['debug'] === true)) {
+                if ((null === $json = json_decode($response['response'], true)) && ($options['debug'] === true)) {
                     throw new Exception("Response is not in JSON format: \n\n".print_r($response, true));
                 }
                 return $json;
@@ -229,6 +233,6 @@ abstract class HttpClient implements HttpClientInterface
                 return $response['response'];
         }
 
-        throw new \LogicException(__CLASS__.' only supports json, json, xml, and xspf formats, '.$this->options['format'].' given.');
+        throw new \LogicException(__CLASS__.' only supports json, json, xml, and xspf formats, '.$options['format'].' given.');
     }
 }
