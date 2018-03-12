@@ -205,6 +205,8 @@ abstract class HttpClient implements HttpClientInterface
      * Get a JSON response and transform it to a PHP array
      *
      * @return  array   the response
+     * @throws Exception
+     * @throws \LogicException
      */
     protected function decodeResponse($response, $options = array())
     {
@@ -215,9 +217,16 @@ abstract class HttpClient implements HttpClientInterface
         switch ($options['format'])
         {
             case 'json':
-                if ((null === $json = json_decode($response['response'], true)) && ($options['debug'] === true)) {
-                    throw new Exception("Response is not in JSON format: \n\n".print_r($response, true));
+                $json = json_decode($response['response'], TRUE);
+                if ($json === null) {
+                    $debugPrintout = "";
+                    if ($options['debug'] === TRUE) {
+                        $debugPrintout = ": \n\n" . print_r($response, TRUE);
+                    }
+
+                    throw new Exception("Response is not in JSON format $debugPrintout");
                 }
+
                 return $json;
 
             case 'jsonp':
