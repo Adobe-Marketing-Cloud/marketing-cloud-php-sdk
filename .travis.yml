@@ -6,8 +6,14 @@ php:
   - 5.4
 
 matrix:
+  include:
+    - php: 5.2
+      dist: precise
+    - php: 5.3
+      dist: precise
   allow_failures:
     - php: 5.2
+    - php: 5.3
 
 before_script:
 - composer install
