@@ -2,13 +2,15 @@ language: php
 
 php:
   - 5.2
-    dist: precise
   - 5.3
-    dist: precise
   - 5.4
-    dist: precise
 
 matrix:
+  include:
+    - php: 5.2
+      dist: precise
+    - php: 5.3
+      dist: precise
   allow_failures:
     - php: 5.2
 
